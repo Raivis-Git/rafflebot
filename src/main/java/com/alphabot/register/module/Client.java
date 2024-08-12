@@ -32,6 +32,17 @@ public class Client {
         this.discordName = discordName;
     }
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", discordWebhook='" + discordWebhook + '\'' +
+                ", raffleKey='" + raffleKey + '\'' +
+                ", discordId='" + discordId + '\'' +
+                ", discordName='" + discordName + '\'' +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }

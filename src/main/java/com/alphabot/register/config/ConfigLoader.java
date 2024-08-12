@@ -1,5 +1,8 @@
 package com.alphabot.register.config;
 
+import com.alphabot.register.discord.Listeners;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -10,13 +13,15 @@ import java.util.Properties;
 public class ConfigLoader {
     private final Properties properties = new Properties();
 
+    Logger LOGGER = LoggerFactory.getLogger(ConfigLoader.class);
+
     public ConfigLoader() {
         String env = System.getProperty("env", "dev");
         String propertiesFileName = "application-" + env + ".properties";
 
         try (InputStream input = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (input == null) {
-                System.out.println("Sorry, unable to find " + propertiesFileName);
+                LOGGER.info("Sorry, unable to find " + propertiesFileName);
                 return;
             }
 

@@ -7,7 +7,8 @@ import com.alphabot.register.integration.alphabot.dto.Error;
 import com.alphabot.register.integration.alphabot.dto.Register;
 import com.alphabot.register.module.Client;
 import com.alphabot.register.repository.ClientRepository;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,8 @@ public class AlphaBotService {
     @Autowired
     private DiscordMain discordMain;
 
+    Logger LOGGER = LoggerFactory.getLogger(AlphaBotService.class);
+
     public AlphaBotService() {
     }
 
@@ -34,7 +37,6 @@ public class AlphaBotService {
         List<Client> clientList =  clientRepository.findAll();
 
         for (Client client : clientList) {
-            System.out.println(client.getDiscordWebhook());
             try {
                 Register register = alphabot.registerRaffle(slug, client.getRaffleKey());
                 if (register.getSuccess())
@@ -57,17 +59,4 @@ public class AlphaBotService {
         }
 
     }
-
-    public Boolean verifyHash(String hashToVerify) {
-        if (hashToVerify == null)
-            return false;
-
-        String alphabotAuthentication = configLoader.getAlphabotAuthentication();
-        if (alphabotAuthentication == null)
-            return true;
-
-        String authenticationHash = DigestUtils.sha256Hex(alphabotAuthentication);
-        return authenticationHash.equals(hashToVerify);
-    }
-
 }

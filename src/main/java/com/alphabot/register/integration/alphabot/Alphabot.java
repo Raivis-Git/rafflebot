@@ -22,7 +22,6 @@ public class Alphabot {
 
     Logger LOGGER = LoggerFactory.getLogger(Alphabot.class);
     Gson gson = new Gson();
-
     ConfigLoader configLoader = new ConfigLoader();
     private final String authenticationKey = configLoader.getProperty("alphabot.authentication");
 
@@ -112,7 +111,7 @@ public class Alphabot {
         }
     }
 
-    // Registers all raffles
+    // Test for Registers all raffles
     public void run() {
         int registered = 0;
         int failedRegisters = 0;
@@ -128,10 +127,10 @@ public class Alphabot {
     }
 
     public static void main(String[] args) {
-        Alphabot alphabot = new Alphabot();
-        Set<RaffleData> raffle = alphabot.getRaffles();
-        System.out.println(raffle.toString());
-
+//        Alphabot alphabot = new Alphabot();
+//        Set<RaffleData> raffle = alphabot.getRaffles();
+//        System.out.println(raffle.toString());
+//
 //        Register register = alphabot.registerRaffle("producers-x-elixir-games-bvuain");
 //        System.out.println(register);
 

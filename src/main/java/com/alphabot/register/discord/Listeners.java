@@ -4,12 +4,9 @@ import com.alphabot.register.module.Client;
 import com.alphabot.register.repository.ClientRepository;
 import jakarta.annotation.Nonnull;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,12 +14,13 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,14 +32,17 @@ public class Listeners extends ListenerAdapter {
     @Autowired
     private ClientRepository clientRepository;
 
+    Logger LOGGER = LoggerFactory.getLogger(Listeners.class);
+
     @Override
     public void onReady(ReadyEvent event) {
-        System.out.println("ready!!!!!!!!!!!!!");
-        JDA jda = event.getJDA();
-        Guild guild = jda.getGuildById(1267649628484927520L);
-        Objects.requireNonNull(guild).updateCommands().addCommands(
-                Commands.slash("register", "Shows a popup to register for automatic raffles")
-        ).queue();
+        LOGGER.info("Discord JDA started successfully");
+//        Create a slash command for a certain guild(group)
+//        JDA jda = event.getJDA();
+//        Guild guild = jda.getGuildById(1267649628484927520L);
+//        Objects.requireNonNull(guild).updateCommands().addCommands(
+//                Commands.slash("register", "Shows a popup to register for automatic raffles")
+//        ).queue();
 
     }
 
@@ -73,20 +74,18 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
-        System.out.println("message Received" + message);
         if (message.startsWith("!acceptRaffles")) {
-            System.out.println("messssage");
             EmbedBuilder eb = new EmbedBuilder()
                     .setTitle("Setup API and Webhook")
                     .setDescription("Select to participate in raffles or remove data from raffle.")
-                    .setFooter("STONKS")
+                    .setFooter("STONKS","https://cooked-canvas-111.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F5ed15b5b-b44a-45b0-98c0-d143a08d3e1c%2F%25D0%25B8%25D0%25B7%25D0%25BE%25D0%25B1%25D1%2580%25D0%25B0%25D0%25B6%25D0%25B5%25D0%25BD%25D0%25B8%25D0%25B5_2023-06-26_231126170.png?table=block&id=8d712934-2e06-493b-ba92-06aa72aac1cb&spaceId=f50a6e2c-d29a-4a77-9b8a-df749d5ff59d&width=2000&userId=&cache=v2")
                     .setColor(0x0000FF);
 
             MessageEmbed messageEmbed = eb.build();
             MessageChannel messageChannel = event.getChannel();
 
             Button primary = Button.primary("register", "Register for raffles");
-            Button secondary = Button.secondary("removeData", "Remove your data");
+            Button secondary = Button.danger("removeData", "Remove your data");
 
             messageChannel.sendMessageEmbeds(messageEmbed).setActionRow(primary, secondary)
                     .queue();
@@ -101,6 +100,7 @@ public class Listeners extends ListenerAdapter {
 
             Member member = event.getMember();
             if (member == null) {
+                LOGGER.info("Registration failed!\n Couldn't retrieve discord user\n" + webhook + "\n" + apiKey);
                 event.reply("Registration failed!\n Couldn't retrieve discord user").setEphemeral(true).queue();
                 return;
             }
@@ -108,9 +108,15 @@ public class Listeners extends ListenerAdapter {
             User user = member.getUser();
 
             Client clientByDiscordId = clientRepository.findByDiscordId(member.getId());
-            if (clientByDiscordId == null)
-                clientRepository.save(new Client(webhook, apiKey, member.getId(), user.getName()));
-            else {
+            if (clientByDiscordId == null) {
+                Client client = new Client(webhook, apiKey, member.getId(), user.getName());
+                LOGGER.info("Creating new client: " + client);
+                clientRepository.save(client);
+            } else {
+                LOGGER.info("Updating existing client: " + clientByDiscordId + "\n" +
+                        webhook + "\n" +
+                        apiKey + "\n" +
+                        user.getName());
                 clientByDiscordId.setDiscordWebhook(webhook);
                 clientByDiscordId.setRaffleKey(apiKey);
                 clientByDiscordId.setDiscordName(user.getName());
@@ -150,7 +156,7 @@ public class Listeners extends ListenerAdapter {
                 if (client != null)
                     clientRepository.delete(client);
 
-                event.reply("Removed from raffle").queue();
+                event.reply("Removed from raffle").setEphemeral(true).queue();
             }
         }
     }
