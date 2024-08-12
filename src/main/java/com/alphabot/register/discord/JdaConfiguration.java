@@ -18,7 +18,7 @@ public class JdaConfiguration {
 
     @Bean
     public JDABuilder jdaBuilder() {
-        return JDABuilder.createDefault(configLoader.getProperty("alphabot.authentication"))
+        return JDABuilder.createDefault(configLoader.getProperty("discord.token"))
                 .setActivity(Activity.playing("with Spring Boot"));
     }
 
