@@ -80,11 +80,12 @@ public class Listeners extends ListenerAdapter {
             Client clientByDiscordId = clientRepository.findByDiscordId(member.getId());
             if (clientByDiscordId == null)
                 clientRepository.save(new Client(webhook, apiKey, member.getId(), user.getName()));
-
-            clientByDiscordId.setDiscordWebhook(webhook);
-            clientByDiscordId.setRaffleKey(apiKey);
-            clientByDiscordId.setDiscordName(user.getName());
-            clientRepository.save(clientByDiscordId);
+            else {
+                clientByDiscordId.setDiscordWebhook(webhook);
+                clientByDiscordId.setRaffleKey(apiKey);
+                clientByDiscordId.setDiscordName(user.getName());
+                clientRepository.save(clientByDiscordId);
+            }
 
             event.reply("Registration successful!").setEphemeral(true).queue();
         }
