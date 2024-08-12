@@ -1,5 +1,6 @@
 package com.alphabot.register.discord;
 
+import com.alphabot.register.config.ConfigLoader;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -13,9 +14,11 @@ import java.util.List;
 @Configuration
 public class JdaConfiguration {
 
+    ConfigLoader configLoader = new ConfigLoader();
+
     @Bean
     public JDABuilder jdaBuilder() {
-        return JDABuilder.createDefault("MTI2NzY0NTQzNDgwNTg4Mjk3MQ.GWuQQt.oiyNwXoyx7I2VANIV79Bqqrc8ZIJykJTrRhfdI")
+        return JDABuilder.createDefault(configLoader.getProperty("alphabot.authentication"))
                 .setActivity(Activity.playing("with Spring Boot"));
     }
 
