@@ -73,8 +73,9 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
-
+        System.out.println("message Received" + message);
         if (message.startsWith("!acceptRaffles")) {
+            System.out.println("messssage");
             EmbedBuilder eb = new EmbedBuilder()
                     .setTitle("Setup API and Webhook")
                     .setDescription("Select to participate in raffles or remove data from raffle.")
