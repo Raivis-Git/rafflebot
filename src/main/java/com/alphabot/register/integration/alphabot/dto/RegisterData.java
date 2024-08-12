@@ -222,7 +222,7 @@ public class RegisterData {
         class Completed {
             Integer rt;
             Integer follow;
-            Integer nft;
+            Long nft;
             Integer discord;
             Integer email;
             Integer telegram;
@@ -243,11 +243,11 @@ public class RegisterData {
                 this.follow = follow;
             }
 
-            public Integer getNft() {
+            public Long getNft() {
                 return nft;
             }
 
-            public void setNft(Integer nft) {
+            public void setNft(Long nft) {
                 this.nft = nft;
             }
 

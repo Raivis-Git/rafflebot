@@ -2,18 +2,19 @@ package com.alphabot.register.discord;
 
 import com.alphabot.register.module.Client;
 import com.alphabot.register.repository.ClientRepository;
-import com.alphabot.register.service.AlphaBotService;
 import jakarta.annotation.Nonnull;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
@@ -36,6 +37,19 @@ public class Listeners extends ListenerAdapter {
         Objects.requireNonNull(guild).updateCommands().addCommands(
                 Commands.slash("register", "Shows a popup to register for automatic raffles")
         ).queue();
+
+        TextChannel textChannel = guild.getTextChannelsByName("general", true).get(0);
+//        textChannel.sendMessage
+
+        Button primary = Button.primary("primary", "Primary Button");
+        Button secondary = Button.secondary("secondary", "Secondary Button");
+        Button success = Button.success("success", "Success Button");
+        Button danger = Button.danger("danger", "Danger Button");
+        Button link = Button.link("https://github.com", "Link Button");
+
+        textChannel.sendMessage("Testing \n What \n Happens here").setActionRow(primary, secondary, success, danger, link)
+                .queue();
+
     }
 
     @Override
