@@ -104,7 +104,7 @@ public class Listeners extends ListenerAdapter {
 
                             Create your own Discord server and generate a webhook. Save this webhook
 
-                            Head over to AlphaBot and generate a API Key. Make sure you save this API key.
+                            Head over to AlphaBot and generate an API Key. Make sure you save this API key.
 
                             Interact with the bot above filling out the correct information, and you should get a "Webhook Valid" message.
 
