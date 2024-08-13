@@ -28,7 +28,7 @@ public class DiscordMain {
                 .setColor(color)
                 .setDescription(description)
                 .setTitle(new WebhookEmbed.EmbedTitle(title, null))
-                .setFooter(new WebhookEmbed.EmbedFooter("STONKS", "https://cooked-canvas-111.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F5ed15b5b-b44a-45b0-98c0-d143a08d3e1c%2F%25D0%25B8%25D0%25B7%25D0%25BE%25D0%25B1%25D1%2580%25D0%25B0%25D0%25B6%25D0%25B5%25D0%25BD%25D0%25B8%25D0%25B5_2023-06-26_231126170.png?table=block&id=8d712934-2e06-493b-ba92-06aa72aac1cb&spaceId=f50a6e2c-d29a-4a77-9b8a-df749d5ff59d&width=2000&userId=&cache=v2"))
+                .setFooter(new WebhookEmbed.EmbedFooter("Nuke production", "https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024"))
                 .build();
         client.send(embed)
                 .thenAccept((message) -> System.out.printf("Message with embed has been sent [%s]%n", message.getId()));
