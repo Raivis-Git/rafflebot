@@ -79,7 +79,10 @@ public class Listeners extends ListenerAdapter {
         if (message.startsWith("!acceptRaffles")) {
             EmbedBuilder embedBuilder = new EmbedBuilder()
                     .setTitle("Setup API and Webhook")
-                    .setDescription("Select to participate in raffles or remove data from raffle.")
+                    .setDescription("""
+                            Select "Register for raffles" to participate in raffles or "Remove your data" to remove your data from raffle participation.
+                            ----------------------------------------------
+                            Выберите "Register for raffles", чтобы участвовать в розыгрышах, или "Remove your data", чтобы удалить ваши данные из участия в розыгрышах.""")
                     .setFooter("STONKS","https://cooked-canvas-111.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F5ed15b5b-b44a-45b0-98c0-d143a08d3e1c%2F%25D0%25B8%25D0%25B7%25D0%25BE%25D0%25B1%25D1%2580%25D0%25B0%25D0%25B6%25D0%25B5%25D0%25BD%25D0%25B8%25D0%25B5_2023-06-26_231126170.png?table=block&id=8d712934-2e06-493b-ba92-06aa72aac1cb&spaceId=f50a6e2c-d29a-4a77-9b8a-df749d5ff59d&width=2000&userId=&cache=v2")
                     .setColor(0xF3E5AB);
 
@@ -94,17 +97,31 @@ public class Listeners extends ListenerAdapter {
 
             EmbedBuilder eb = new EmbedBuilder()
                     .setTitle("STONKS RAFFLE")
-                    .setDescription("Note: Alphabot Premium is REQUIRED for this to work\n" +
-                            "\n" +
-                            "Setup Guide\n" +
-                            "\n" +
-                            "Create your own Discord server and generate a webhook. Save this webhook\n" +
-                            "\n" +
-                            "Head over to AlphaBot and generate a API Key. Make sure you save this API key.\n" +
-                            "\n" +
-                            "Interact with the bot above filling out the correct information, and you should get a \"Webhook Validation\" message.\n" +
-                            "\n" +
-                            "Once you have completed the steps, you now have an auto giveaway joiner for all the AlphaBots raffles.")
+                    .setDescription("""
+                            Note: Alphabot Premium is REQUIRED for this to work
+                            
+                            Setup Guide:
+
+                            Create your own Discord server and generate a webhook. Save this webhook
+
+                            Head over to AlphaBot and generate a API Key. Make sure you save this API key.
+
+                            Interact with the bot above filling out the correct information, and you should get a "Webhook Valid" message.
+
+                            Once you have completed the steps, you now have an auto giveaway joiner for all the AlphaBots raffles.
+                            ----------------------------------------------
+                            
+                            Примечание: Для этого требуется Alphabot Premium.
+                            
+                            Указания по настройке:
+
+                            Создайте собственный сервер в Discord и сгенерируйте вебхук. Сохраните этот вебхук.
+
+                            Перейдите на AlphaBot и сгенерируйте API-ключ. Убедитесь, что вы сохранили этот API-ключ.
+
+                            Взаимодействуйте с ботом, заполнив правильную информацию, и вы должны получить сообщение в своей дискорд группе "Webhook valid"
+
+                            После выполнения этих шагов у вас теперь будет авто-регистрация для всех розыгрышей AlphaBot.""")
                     .setFooter("STONKS","https://cooked-canvas-111.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F5ed15b5b-b44a-45b0-98c0-d143a08d3e1c%2F%25D0%25B8%25D0%25B7%25D0%25BE%25D0%25B1%25D1%2580%25D0%25B0%25D0%25B6%25D0%25B5%25D0%25BD%25D0%25B8%25D0%25B5_2023-06-26_231126170.png?table=block&id=8d712934-2e06-493b-ba92-06aa72aac1cb&spaceId=f50a6e2c-d29a-4a77-9b8a-df749d5ff59d&width=2000&userId=&cache=v2")
                     .setColor(0xF3E5AB);
 
