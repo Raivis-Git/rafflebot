@@ -18,11 +18,11 @@ public class AlphaBotController {
     @Autowired
     AlphaBotService alphaBotService;
 
-    @GetMapping
-    public ResponseEntity<?> getRaffles() {
-        Alphabot alphabot = new Alphabot();
-        return ResponseEntity.ok(alphabot.getRaffles());
-    }
+//    @GetMapping
+//    public ResponseEntity<?> getRaffles() {
+//        Alphabot alphabot = new Alphabot();
+//        return ResponseEntity.ok(alphabot.getRaffles());
+//    }
 
     @PostMapping(consumes ="application/json")
     public ResponseEntity<?> postRaffles(@RequestBody RafflesActivePost rafflesActivePost) {

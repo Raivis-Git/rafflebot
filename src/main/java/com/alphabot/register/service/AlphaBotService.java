@@ -1,6 +1,7 @@
 package com.alphabot.register.service;
 
 import com.alphabot.register.config.ConfigLoader;
+import com.alphabot.register.dao.RaffleDAO;
 import com.alphabot.register.discord.DiscordMain;
 import com.alphabot.register.integration.alphabot.Alphabot;
 import com.alphabot.register.integration.alphabot.dto.Error;
@@ -13,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 
@@ -41,20 +46,20 @@ public class AlphaBotService {
                 Register register = alphabot.registerRaffle(slug, client.getRaffleKey());
                 if (register.getSuccess())
                     discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration successful", "Registered to: \n" + raffleName, true);
-
-                else {
-                    String returnString;
-                    if (register.getRegisterData() == null)
-                        returnString = register.getErrors().stream().map(Error::getMessage).collect(Collectors.joining(", "));
-                    else
-                        returnString = register.getRegisterData().getResultMd();
-
-                    if (returnString == null)
-                        returnString = register.getRegisterData().getValidationReason();
-
-                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
-                            "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", false);
-                }
+//                  If failed send embed msg to webhook
+//                else {
+//                    String returnString;
+//                    if (register.getRegisterData() == null)
+//                        returnString = register.getErrors().stream().map(Error::getMessage).collect(Collectors.joining(", "));
+//                    else
+//                        returnString = register.getRegisterData().getResultMd();
+//
+//                    if (returnString == null)
+//                        returnString = register.getRegisterData().getValidationReason();
+//
+//                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
+//                            "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", false);
+//                }
             } catch (Exception ignore){}
         }
 

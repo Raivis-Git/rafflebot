@@ -5,6 +5,11 @@ import java.util.List;
 
 public class Raffle {
 
+    Boolean success;
+    Data data;
+
+    List<Error> errors;
+
     public class Data {
         List<RaffleData> raffles = new ArrayList<>();
         Boolean finalPage;
@@ -17,11 +22,6 @@ public class Raffle {
             return finalPage;
         }
     }
-
-    Boolean success;
-    Data data;
-
-    List<Error> errors;
 
     public Raffle() {
     }

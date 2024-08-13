@@ -25,8 +25,32 @@ public class Alphabot {
     ConfigLoader configLoader = new ConfigLoader();
     private final String authenticationKey = configLoader.getProperty("alphabot.authentication");
 
+    public Raffle getLatestRaffles(String pageSize) {
+        // Create an instance of HttpClient
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Create the HttpRequest
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.alphabot.app/v1/raffles?filter=unregistered&status=active&pageNum=0&pageSize=" + pageSize))
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .header("Authorization", "Bearer " + authenticationKey)
+                .GET().build();
+
+        // Send the request and get the response
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            LOGGER.info("raffle retrieval successful");
+            return gson.fromJson(response.body(), Raffle.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            return null;
+        }
+    }
+
     // Get all Raffles
-    public Set<RaffleData> getRaffles() {
+    public Set<RaffleData> getAllRaffles() {
 
         // Create an instance of HttpClient
         HttpClient client = HttpClient.newHttpClient();
@@ -115,7 +139,7 @@ public class Alphabot {
     public void run() {
         int registered = 0;
         int failedRegisters = 0;
-        Set<RaffleData> raffleDataSet = getRaffles();
+        Set<RaffleData> raffleDataSet = getAllRaffles();
         for (RaffleData raffleData : raffleDataSet) {
             Register register = registerRaffle(raffleData.getSlug());
             if (register.getSuccess())

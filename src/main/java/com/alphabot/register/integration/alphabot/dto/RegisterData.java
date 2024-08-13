@@ -191,23 +191,23 @@ public class RegisterData {
         }
     }
     class PendingCheck {
-        Integer start;
-        Integer complete;
+        Long start;
+        Long complete;
         Completed completed;
 
-        public Integer getStart() {
+        public Long getStart() {
             return start;
         }
 
-        public void setStart(Integer start) {
+        public void setStart(Long start) {
             this.start = start;
         }
 
-        public Integer getComplete() {
+        public Long getComplete() {
             return complete;
         }
 
-        public void setComplete(Integer complete) {
+        public void setComplete(Long complete) {
             this.complete = complete;
         }
 
@@ -220,26 +220,26 @@ public class RegisterData {
         }
 
         class Completed {
-            Integer rt;
-            Integer follow;
+            Long rt;
+            Long follow;
             Long nft;
-            Integer discord;
-            Integer email;
-            Integer telegram;
+            Long discord;
+            Long email;
+            Long telegram;
 
-            public Integer getRt() {
+            public Long getRt() {
                 return rt;
             }
 
-            public void setRt(Integer rt) {
+            public void setRt(Long rt) {
                 this.rt = rt;
             }
 
-            public Integer getFollow() {
+            public Long getFollow() {
                 return follow;
             }
 
-            public void setFollow(Integer follow) {
+            public void setFollow(Long follow) {
                 this.follow = follow;
             }
 
@@ -251,27 +251,27 @@ public class RegisterData {
                 this.nft = nft;
             }
 
-            public Integer getDiscord() {
+            public Long getDiscord() {
                 return discord;
             }
 
-            public void setDiscord(Integer discord) {
+            public void setDiscord(Long discord) {
                 this.discord = discord;
             }
 
-            public Integer getEmail() {
+            public Long getEmail() {
                 return email;
             }
 
-            public void setEmail(Integer email) {
+            public void setEmail(Long email) {
                 this.email = email;
             }
 
-            public Integer getTelegram() {
+            public Long getTelegram() {
                 return telegram;
             }
 
-            public void setTelegram(Integer telegram) {
+            public void setTelegram(Long telegram) {
                 this.telegram = telegram;
             }
         }
