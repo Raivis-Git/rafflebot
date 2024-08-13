@@ -86,7 +86,7 @@ public class Listeners extends ListenerAdapter {
 
             Button primary = Button.primary("register", "Register for raffles");
             Button secondary = Button.danger("removeData", "Remove your data");
-
+            LOGGER.info("send message embeds for setup API and Webhook");
             messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(primary, secondary)
                     .queue();
 
@@ -107,9 +107,8 @@ public class Listeners extends ListenerAdapter {
                     .setColor(0x0000FF);
 
             MessageEmbed messageEmbed = eb.build();
-            MessageChannel messageChannel = event.getChannel();
-
-            messageChannel.sendMessageEmbeds(messageEmbed).queue();
+            LOGGER.info("send message embeds for description");
+            messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
 
         }
     }
