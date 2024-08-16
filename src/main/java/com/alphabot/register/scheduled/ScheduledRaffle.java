@@ -1,22 +1,17 @@
 package com.alphabot.register.scheduled;
 
-import com.alphabot.register.config.AsyncConfig;
 import com.alphabot.register.dao.RaffleDAO;
 import com.alphabot.register.integration.alphabot.Alphabot;
 import com.alphabot.register.integration.alphabot.dto.Raffle;
 import com.alphabot.register.integration.alphabot.dto.RaffleData;
-import com.alphabot.register.service.AlphaBotService;
 import com.alphabot.register.service.RaffleQueueConsumerService;
 import com.alphabot.register.service.RaffleQueueService;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -28,6 +23,8 @@ public class ScheduledRaffle {
     RaffleQueueConsumerService raffleQueueConsumerService;
     @Autowired
     RaffleQueueService raffleQueueService;
+
+    boolean started = false;
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledRaffle.class);
@@ -45,9 +42,10 @@ public class ScheduledRaffle {
 
             raffleQueueService.addToRaffleQueue(new RaffleDAO(slug,raffleData.getName()));
         }
-        raffleQueueConsumerService.startConsuming();
-        raffleQueueConsumerService.startConsuming();
-
+        if (!started) {
+            raffleQueueConsumerService.startConsuming();
+            started = true;
+        }
         LOGGER.info("Active threads: " + Thread.activeCount());
     }
 

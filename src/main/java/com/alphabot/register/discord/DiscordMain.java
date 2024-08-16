@@ -32,6 +32,8 @@ public class DiscordMain {
                 .build();
         client.send(embed)
                 .thenAccept((message) -> System.out.printf("Message with embed has been sent [%s]%n", message.getId()));
+
+        LOGGER.info("Sent webhook embed to url");
     }
 
     // For testing purposes
