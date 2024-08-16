@@ -124,7 +124,6 @@ public class Alphabot {
                 .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
                 .build();
 
-        LOGGER.info("POST register raffle");
         // Send the request and get the response
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -151,13 +150,13 @@ public class Alphabot {
     }
 
     public static void main(String[] args) {
-//        Alphabot alphabot = new Alphabot();
-//        Set<RaffleData> raffle = alphabot.getRaffles();
-//        System.out.println(raffle.toString());
-//
+        Alphabot alphabot = new Alphabot();
+        Raffle raffle = alphabot.getLatestRaffles("10");
+        System.out.println(raffle.toString());
+
 //        Register register = alphabot.registerRaffle("producers-x-elixir-games-bvuain");
 //        System.out.println(register);
-
+//
 //        alphabot.run();
     }
 }

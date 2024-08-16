@@ -27,8 +27,6 @@ public class AlphaBotController {
     @PostMapping(consumes ="application/json")
     public ResponseEntity<?> postRaffles(@RequestBody RafflesActivePost rafflesActivePost) {
 
-        LOGGER.info(rafflesActivePost.toString());
-
         if ("raffle:active".equals(rafflesActivePost.getEvent()))
             alphaBotService.registerRaffle(rafflesActivePost.getData().getRaffle().getSlug(), rafflesActivePost.getData().getRaffle().getName());
 
