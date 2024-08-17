@@ -12,7 +12,7 @@ public class DiscordMain {
 
     Logger LOGGER = LoggerFactory.getLogger(DiscordMain.class);
 
-    public void sendEmbedWebhook(String url, String title, String description, boolean isSuccess) {
+    public void sendEmbedWebhook(String url, String title, String description, String discordName, boolean isSuccess) {
         if (title == null)
             title = "Raffle registration";
 
@@ -33,7 +33,7 @@ public class DiscordMain {
         client.send(embed)
                 .thenAccept((message) -> System.out.printf("Message with embed has been sent [%s]%n", message.getId()));
 
-        LOGGER.info("Sent webhook embed to url");
+        LOGGER.info("Sent webhook embed to: " + discordName);
     }
 
     // For testing purposes

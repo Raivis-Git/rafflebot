@@ -45,7 +45,7 @@ public class AlphaBotService {
             try {
                 Register register = alphabot.registerRaffle(slug, client.getRaffleKey());
                 if (register.getSuccess())
-                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration successful", "Registered to: \n" + raffleName, true);
+                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration successful", "Registered to: \n" + raffleName, client.getDiscordName(), true);
 //                  If failed send embed msg to webhook
 //                else {
 //                    String returnString;
