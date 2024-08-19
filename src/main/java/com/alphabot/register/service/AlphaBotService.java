@@ -64,11 +64,11 @@ public class AlphaBotService {
                     returnString = "Refresh API Key";
                     discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
                             "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
-                } else if (returnString.contains("connect twitter")) {
+                } else if (returnString.contains("connect twitter") || returnString.contains("re-connect your twitter")) {
                     returnString = "Reconnect Twitter";
                     discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
                             "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
-                } else if (returnString.contains("connect discord")) {
+                } else if (returnString.contains("connect discord") || returnString.contains("re-connect your discord")) {
                     returnString = "Reconnect Discord";
                     discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
                             "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
