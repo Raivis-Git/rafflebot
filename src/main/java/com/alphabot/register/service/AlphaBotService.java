@@ -60,15 +60,19 @@ public class AlphaBotService {
 
                 returnString = returnString.toLowerCase().trim();
 
-                if (returnString.contains("invalid api"))
+                if (returnString.contains("invalid api")) {
                     returnString = "Refresh API Key";
-                else if (returnString.contains("connect twitter"))
-                    returnString = "Reconnect Twitter";
-                else if (returnString.contains("connect discord"))
-                    returnString = "Reconnect Discord";
-
                     discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
                             "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+                } else if (returnString.contains("connect twitter")) {
+                    returnString = "Reconnect Twitter";
+                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
+                            "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+                } else if (returnString.contains("connect discord")) {
+                    returnString = "Reconnect Discord";
+                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
+                            "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+                }
 
             } catch (Exception ignore){}
         }
