@@ -1,6 +1,8 @@
 package com.alphabot.register.service;
 
 import com.alphabot.register.dao.RaffleDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RaffleQueueConsumerService {
 
+
+    Logger LOGGER = LoggerFactory.getLogger(RaffleQueueConsumerService.class);
     @Autowired
     private RaffleQueueService raffleQueueService;
     @Autowired
@@ -23,7 +27,7 @@ public class RaffleQueueConsumerService {
 
     private void process(RaffleDAO raffleDAO) {
         alphaBotService.registerRaffle(raffleDAO.getSlug(), raffleDAO.getRaffleName());
-        System.out.println("Processed by: " + Thread.currentThread().getName());
+        LOGGER.info("Processed by: " + Thread.currentThread().getName() + "--- Raffle: " + raffleDAO.getRaffleName());
     }
 
 }
