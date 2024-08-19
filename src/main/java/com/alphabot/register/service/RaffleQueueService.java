@@ -34,6 +34,10 @@ public class RaffleQueueService {
         }
     }
 
+    public Integer getQueueSize() {
+        return raffleQueue.size();
+    }
+
     public boolean hasData() {
         return !raffleQueue.isEmpty();
     }

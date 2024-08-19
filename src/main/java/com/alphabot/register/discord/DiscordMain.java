@@ -17,7 +17,7 @@ public class DiscordMain {
             title = "Raffle registration";
 
         if (description == null)
-            description = "Raffle regsitered successfully";
+            description = "Raffle registered successfully";
 
         int color = 0x00ff00;
         if (!isSuccess)

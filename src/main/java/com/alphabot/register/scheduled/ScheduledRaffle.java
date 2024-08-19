@@ -43,10 +43,11 @@ public class ScheduledRaffle {
             raffleQueueService.addToRaffleQueue(new RaffleDAO(slug,raffleData.getName()));
         }
         if (!started) {
-            raffleQueueConsumerService.startConsuming();
             started = true;
+            raffleQueueConsumerService.startConsuming();
         }
-        LOGGER.info("Active threads: " + Thread.activeCount());
+        LOGGER.info("Active threads: " + Thread.activeCount() + "\n" +
+                "Queue size: " + raffleQueueService.getQueueSize());
     }
 
 }
