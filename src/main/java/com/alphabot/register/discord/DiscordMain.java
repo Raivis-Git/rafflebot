@@ -33,7 +33,9 @@ public class DiscordMain {
         client.send(embed)
                 .thenAccept((message) -> System.out.printf("Message with embed has been sent [%s]%n", message.getId()));
 
-        LOGGER.info("Sent webhook embed to: " + discordName + ": With description: " + description);
+
+        description = description.replace("\n", " ");
+        LOGGER.info("Sent " + (isSuccess ? "SUCCESS" : "FAILED") + " webhook embed to: " + discordName + ": With description: " + description);
     }
 
     // For testing purposes
