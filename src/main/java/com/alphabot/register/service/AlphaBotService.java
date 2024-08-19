@@ -42,7 +42,7 @@ public class AlphaBotService {
                 if (register.getSuccess()) {
                     discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration successful",
                             "Registered to: \n" + raffleName, client.getDiscordName(), true);
-                    return;
+                    continue;
                 }
 
 //              If failed send embed msg to webhook
@@ -56,7 +56,7 @@ public class AlphaBotService {
                     returnString = register.getRegisterData().getValidationReason();
 
                 if (returnString == null)
-                    return;
+                    continue;
 
                 returnString = returnString.toLowerCase().trim();
 
