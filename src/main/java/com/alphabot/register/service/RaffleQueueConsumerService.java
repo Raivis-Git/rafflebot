@@ -17,7 +17,7 @@ public class RaffleQueueConsumerService {
     @Autowired
     private AlphaBotService alphaBotService;
 
-    @Async("taskExecutor")
+//    @Async("taskExecutor")
     public void startConsuming() {
         while (true) {
             RaffleDAO data = raffleQueueService.takeFromRaffleQueue();
