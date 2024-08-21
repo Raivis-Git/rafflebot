@@ -17,11 +17,20 @@ public class RaffleQueueConsumerService {
     @Autowired
     private AlphaBotService alphaBotService;
 
+    boolean isRunning = false;
+
 //    @Async("taskExecutor")
     public void startConsuming() {
-        while (true) {
-            RaffleDAO data = raffleQueueService.takeFromRaffleQueue();
-            process(data);
+        if (!isRunning) {
+            try {
+                while (raffleQueueService.hasData()) {
+                    isRunning = true;
+                    RaffleDAO data = raffleQueueService.takeFromRaffleQueue();
+                    process(data);
+                }
+            } finally {
+                isRunning = false;
+            }
         }
     }
 

@@ -76,7 +76,7 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
-        if (message.startsWith("!acceptRaffles")) {
+        if (message.startsWith("!acceptRafflesENRU")) {
             EmbedBuilder embedBuilder = new EmbedBuilder()
                     .setTitle("Setup API and Webhook")
                     .setDescription("""
@@ -111,6 +111,86 @@ public class Listeners extends ListenerAdapter {
                             Once you have completed the steps, you now have an auto giveaway joiner for all the AlphaBots raffles.
                             ----------------------------------------------
                             
+                            Примечание: Для этого требуется Alphabot Premium.
+                                                                                                                         
+                            Указания по настройке:
+                            Так-же есть видео гайд внизу.
+                            
+                            Создайте собственный сервер в Discord и сгенерируйте вебхук из сервера, сохраните этот вебхук.
+                            
+                            Перейдите на AlphaBot и сгенерируйте API-key. Убедитесь, что вы сохранили этот API-ключ.
+                            
+                            Взаимодействуйте с ботом, заполнив информацию с Webhook и API-key, вы должны получить сообщение в своей дискорд группе "Webhook valid"
+                            После этого действия вам будут приходить сообщения об успешной регистраций.
+                            
+                            После выполнения этих шагов у вас теперь будет авто-регистрация для всех розыгрышей AlphaBot.""")
+                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
+                    .setColor(0xF3E5AB);
+
+            MessageEmbed messageEmbed = eb.build();
+            LOGGER.info("send message embeds for description");
+            messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
+
+        } else if (message.startsWith("!acceptRafflesEN")) {
+            EmbedBuilder embedBuilder = new EmbedBuilder()
+                    .setTitle("Setup API and Webhook")
+                    .setDescription("""
+                            Select "Register for raffles" to participate in raffles or "Remove your data" to remove your data from raffle participation.
+                            """)
+                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
+                    .setColor(0xF3E5AB);
+
+            MessageEmbed messageEmbedSetup = embedBuilder.build();
+            MessageChannel messageChannelSetup = event.getChannel();
+
+            Button primary = Button.primary("register", "Register for raffles");
+            Button secondary = Button.danger("removeData", "Remove your data");
+            LOGGER.info("send message embeds for setup API and Webhook");
+            messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(primary, secondary)
+                    .queue();
+
+            EmbedBuilder eb = new EmbedBuilder()
+                    .setTitle("Raffle Bot")
+                    .setDescription("""
+                            Note: Alphabot Premium is REQUIRED for this to work
+                            
+                            Setup Guide:
+
+                            Create your own Discord server and generate a webhook. Save this webhook
+
+                            Head over to AlphaBot and generate an API Key. Make sure you save this API key.
+
+                            Interact with the bot above filling out the correct information, and you should get a "Webhook Valid" message.
+
+                            Once you have completed the steps, you now have an auto giveaway joiner for all the AlphaBots raffles.
+                            """)
+                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
+                    .setColor(0xF3E5AB);
+
+            MessageEmbed messageEmbed = eb.build();
+            LOGGER.info("send message embeds for description");
+            messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
+
+        } else if (message.startsWith("!acceptRafflesRU")) {
+            EmbedBuilder embedBuilder = new EmbedBuilder()
+                    .setTitle("Setup API and Webhook")
+                    .setDescription("""
+                            Выберите "Register for raffles", чтобы участвовать в розыгрышах, или "Remove your data", чтобы удалить ваши данные из участия в розыгрышах.""")
+                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
+                    .setColor(0xF3E5AB);
+
+            MessageEmbed messageEmbedSetup = embedBuilder.build();
+            MessageChannel messageChannelSetup = event.getChannel();
+
+            Button primary = Button.primary("register", "Register for raffles");
+            Button secondary = Button.danger("removeData", "Remove your data");
+            LOGGER.info("send message embeds for setup API and Webhook");
+            messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(primary, secondary)
+                    .queue();
+
+            EmbedBuilder eb = new EmbedBuilder()
+                    .setTitle("Raffle Bot")
+                    .setDescription("""
                             Примечание: Для этого требуется Alphabot Premium.
                                                                                                                          
                             Указания по настройке:
