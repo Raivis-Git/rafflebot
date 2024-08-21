@@ -247,10 +247,14 @@ public class Listeners extends ListenerAdapter {
                 clientRepository.save(clientByDiscordId);
                 discordName = clientByDiscordId.getDiscordName();
             }
+            try {
+                discordMain.sendEmbedWebhook(webhook, "Webhook valid", "Your webhook registered successfully",
+                        discordName, true);
+                event.reply("Registration successful!").setEphemeral(true).queue();
+            } catch (Exception e) {
+                event.reply("Webhook URL is invalid").setEphemeral(true).queue();
+            }
 
-            discordMain.sendEmbedWebhook(webhook, "Webhook valid", "Your webhook registered successfully",
-                    discordName, true);
-            event.reply("Registration successful!").setEphemeral(true).queue();
         }
     }
 

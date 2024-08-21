@@ -24,9 +24,6 @@ public class ScheduledRaffle {
     @Autowired
     RaffleQueueService raffleQueueService;
 
-    boolean started = false;
-
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledRaffle.class);
 
     @Scheduled(fixedRate = 900, timeUnit = TimeUnit.SECONDS)
@@ -40,7 +37,7 @@ public class ScheduledRaffle {
                 continue;
             }
 
-            raffleQueueService.addToRaffleQueue(new RaffleDAO(slug,raffleData.getName()));
+            raffleQueueService.addToRaffleQueue(new RaffleDAO(slug, raffleData.getName()));
         }
 
         raffleQueueConsumerService.startConsuming();
