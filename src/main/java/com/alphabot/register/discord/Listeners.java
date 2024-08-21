@@ -228,12 +228,14 @@ public class Listeners extends ListenerAdapter {
             }
 
             User user = member.getUser();
+            String discordName;
 
             Client clientByDiscordId = clientRepository.findByDiscordId(member.getId());
             if (clientByDiscordId == null) {
                 Client client = new Client(webhook, apiKey, member.getId(), user.getName());
                 LOGGER.info("Creating new client: " + client);
                 clientRepository.save(client);
+                discordName = client.getDiscordName();
             } else {
                 LOGGER.info("Updating existing client: " + clientByDiscordId + "\n" +
                         webhook + "\n" +
@@ -243,9 +245,11 @@ public class Listeners extends ListenerAdapter {
                 clientByDiscordId.setRaffleKey(apiKey);
                 clientByDiscordId.setDiscordName(user.getName());
                 clientRepository.save(clientByDiscordId);
+                discordName = clientByDiscordId.getDiscordName();
             }
 
-            discordMain.sendEmbedWebhook(webhook, "Webhook valid", "Your webhook registered successfully", clientByDiscordId.getDiscordName(), true);
+            discordMain.sendEmbedWebhook(webhook, "Webhook valid", "Your webhook registered successfully",
+                    discordName, true);
             event.reply("Registration successful!").setEphemeral(true).queue();
         }
     }
