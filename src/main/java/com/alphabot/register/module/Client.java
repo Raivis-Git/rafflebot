@@ -2,6 +2,8 @@ package com.alphabot.register.module;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Client {
 
@@ -22,14 +24,25 @@ public class Client {
     @Column(name = "discordName")
     String discordName;
 
+    @Column(name = "groupId")
+    String groupId;
+
+    @Column(name = "created")
+    LocalDateTime created = LocalDateTime.now();
+
+    @Column(name = "subscriptionEndDate")
+    LocalDateTime subscriptionEndDate;
+
     public Client() {
     }
 
-    public Client(String discordWebhook, String raffleKey, String discordId, String discordName) {
+    public Client(String discordWebhook, String raffleKey, String discordId, String discordName, String groupId, LocalDateTime subscriptionEndDate) {
         this.discordWebhook = discordWebhook;
         this.raffleKey = raffleKey;
         this.discordId = discordId;
         this.discordName = discordName;
+        this.groupId = groupId;
+        this.subscriptionEndDate = subscriptionEndDate;
     }
 
     @Override
@@ -40,6 +53,9 @@ public class Client {
                 ", raffleKey='" + raffleKey + '\'' +
                 ", discordId='" + discordId + '\'' +
                 ", discordName='" + discordName + '\'' +
+                ", groupId='" + groupId + '\'' +
+                ", created=" + created +
+                ", subscriptionTill=" + subscriptionEndDate +
                 '}';
     }
 
@@ -81,5 +97,29 @@ public class Client {
 
     public void setDiscordName(String discordName) {
         this.discordName = discordName;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public LocalDateTime getSubscriptionEndDate() {
+        return subscriptionEndDate;
+    }
+
+    public void setSubscriptionEndDate(LocalDateTime subscriptionEndDate) {
+        this.subscriptionEndDate = subscriptionEndDate;
     }
 }

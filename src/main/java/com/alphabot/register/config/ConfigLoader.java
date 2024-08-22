@@ -1,15 +1,14 @@
 package com.alphabot.register.config;
 
-import com.alphabot.register.discord.Listeners;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Component
+@Configuration
 public class ConfigLoader {
     private final Properties properties = new Properties();
 

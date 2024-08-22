@@ -1,7 +1,9 @@
 package com.alphabot.register.discord;
 
 import com.alphabot.register.module.Client;
+import com.alphabot.register.module.Guild;
 import com.alphabot.register.repository.ClientRepository;
+import com.alphabot.register.service.GuildService;
 import jakarta.annotation.Nonnull;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -31,7 +33,8 @@ public class Listeners extends ListenerAdapter {
 
     @Autowired
     private ClientRepository clientRepository;
-
+    @Autowired
+    private GuildService guildService;
     @Autowired
     private DiscordMain discordMain;
     Logger LOGGER = LoggerFactory.getLogger(Listeners.class);
@@ -39,13 +42,6 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
         LOGGER.info("Discord JDA started successfully");
-//        Create a slash command for a certain guild(group)
-//        JDA jda = event.getJDA();
-//        Guild guild = jda.getGuildById(1267649628484927520L);
-//        Objects.requireNonNull(guild).updateCommands().addCommands(
-//                Commands.slash("register", "Shows a popup to register for automatic raffles")
-//        ).queue();
-
     }
 
     @Override
@@ -98,32 +94,47 @@ public class Listeners extends ListenerAdapter {
             EmbedBuilder eb = new EmbedBuilder()
                     .setTitle("Raffle Bot")
                     .setDescription("""
-                            Note: Alphabot Premium is REQUIRED for this to work
+                            Note: Alphabot Premium is required for this setup.
                             
-                            Setup Guide:
-
-                            Create your own Discord server and generate a webhook. Save this webhook
-
-                            Head over to AlphaBot and generate an API Key. Make sure you save this API key.
-
-                            Interact with the bot above filling out the correct information, and you should get a "Webhook Valid" message.
-
-                            Once you have completed the steps, you now have an auto giveaway joiner for all the AlphaBots raffles.
+                            Setup Instructions:
+                            
+                            Create a Server and Webhook:
+                             1.Create your own Discord server.
+                            Go to the server settings and generate a webhook.
+                            Save the webhook URL, as you'll need it in the next step.
+                            
+                            Obtain an API Key from AlphaBot:
+                             2.Visit the AlphaBot website and generate your API key.
+                            Make sure to save this API key for the bot setup.
+                            
+                            Configure the Bot:
+                             3.Interact with the bot, providing the webhook URL and API key.
+                            After completing these steps, the bot will automatically participate in all raffles hosted by AlphaBot that match your server and Discord role requirements.
+                            
+                            
+                            Note: For detailed information and a visual guide, refer to the video tutorial below.
                             ----------------------------------------------
                             
-                            Примечание: Для этого требуется Alphabot Premium.
-                                                                                                                         
-                            Указания по настройке:
-                            Так-же есть видео гайд внизу.
+                            Настройка бота для розыгрышей
                             
-                            Создайте собственный сервер в Discord и сгенерируйте вебхук из сервера, сохраните этот вебхук.
+                            Требуется: Alphabot Premium
                             
-                            Перейдите на AlphaBot и сгенерируйте API-key. Убедитесь, что вы сохранили этот API-ключ.
+                            Инструкции по настройке:
                             
-                            Взаимодействуйте с ботом, заполнив информацию с Webhook и API-key, вы должны получить сообщение в своей дискорд группе "Webhook valid"
-                            После этого действия вам будут приходить сообщения об успешной регистраций.
+                            Создание сервера и вебхука:
+                              1.Создайте свой собственный сервер в Discord.
+                            Перейдите в настройки сервера и создайте вебхук.
+                            Сохраните URL вебхука, так как он понадобится на следующем шаге.
                             
-                            После выполнения этих шагов у вас теперь будет авто-регистрация для всех розыгрышей AlphaBot.""")
+                            Получение API-ключа от AlphaBot:
+                              2.Перейдите на сайт AlphaBot и сгенерируйте свой API-ключ.
+                            Обязательно сохраните этот ключ для настройки бота.
+                            
+                            Настройка бота:
+                              3.Взаимодействуйте с ботом, предоставив ему URL вебхука и API-ключ.
+                            После завершения этих шагов бот будет автоматически участвовать во всех розыгрышах, проводимых AlphaBot, в которых вы соответствуете требованиям сервера и роли в Discord.
+                            
+                            Подробную информацию и наглядное руководство можно найти в видео ниже.""")
                     .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
                     .setColor(0xF3E5AB);
 
@@ -152,17 +163,25 @@ public class Listeners extends ListenerAdapter {
             EmbedBuilder eb = new EmbedBuilder()
                     .setTitle("Raffle Bot")
                     .setDescription("""
-                            Note: Alphabot Premium is REQUIRED for this to work
+                            Note: Alphabot Premium is required for this setup.
                             
-                            Setup Guide:
-
-                            Create your own Discord server and generate a webhook. Save this webhook
-
-                            Head over to AlphaBot and generate an API Key. Make sure you save this API key.
-
-                            Interact with the bot above filling out the correct information, and you should get a "Webhook Valid" message.
-
-                            Once you have completed the steps, you now have an auto giveaway joiner for all the AlphaBots raffles.
+                            Setup Instructions:
+                            
+                            Create a Server and Webhook:
+                             1.Create your own Discord server.
+                            Go to the server settings and generate a webhook.
+                            Save the webhook URL, as you'll need it in the next step.
+                            
+                            Obtain an API Key from AlphaBot:
+                             2.Visit the AlphaBot website and generate your API key.
+                            Make sure to save this API key for the bot setup.
+                            
+                            Configure the Bot:
+                             3.Interact with the bot, providing the webhook URL and API key.
+                            After completing these steps, the bot will automatically participate in all raffles hosted by AlphaBot that match your server and Discord role requirements.
+                            
+                            
+                            Note: For detailed information and a visual guide, refer to the video tutorial below.
                             """)
                     .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
                     .setColor(0xF3E5AB);
@@ -191,19 +210,26 @@ public class Listeners extends ListenerAdapter {
             EmbedBuilder eb = new EmbedBuilder()
                     .setTitle("Raffle Bot")
                     .setDescription("""
-                            Примечание: Для этого требуется Alphabot Premium.
-                                                                                                                         
-                            Указания по настройке:
-                            Так-же есть видео гайд внизу.
+                            Настройка бота для розыгрышей
                             
-                            Создайте собственный сервер в Discord и сгенерируйте вебхук из сервера, сохраните этот вебхук.
+                            Требуется: Alphabot Premium
                             
-                            Перейдите на AlphaBot и сгенерируйте API-key. Убедитесь, что вы сохранили этот API-ключ.
+                            Инструкции по настройке:
                             
-                            Взаимодействуйте с ботом, заполнив информацию с Webhook и API-key, вы должны получить сообщение в своей дискорд группе "Webhook valid"
-                            После этого действия вам будут приходить сообщения об успешной регистраций.
+                            Создание сервера и вебхука:
+                              1.Создайте свой собственный сервер в Discord.
+                            Перейдите в настройки сервера и создайте вебхук.
+                            Сохраните URL вебхука, так как он понадобится на следующем шаге.
                             
-                            После выполнения этих шагов у вас теперь будет авто-регистрация для всех розыгрышей AlphaBot.""")
+                            Получение API-ключа от AlphaBot:
+                              2.Перейдите на сайт AlphaBot и сгенерируйте свой API-ключ.
+                            Обязательно сохраните этот ключ для настройки бота.
+                            
+                            Настройка бота:
+                              3.Взаимодействуйте с ботом, предоставив ему URL вебхука и API-ключ.
+                            После завершения этих шагов бот будет автоматически участвовать во всех розыгрышах, проводимых AlphaBot, в которых вы соответствуете требованиям сервера и роли в Discord.
+                            
+                            Подробную информацию и наглядное руководство можно найти в видео ниже.""")
                     .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
                     .setColor(0xF3E5AB);
 
@@ -211,6 +237,45 @@ public class Listeners extends ListenerAdapter {
             LOGGER.info("send message embeds for description");
             messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
 
+        } else if (message.startsWith("!testtesttest")) {
+            EmbedBuilder embedBuilder = new EmbedBuilder()
+                    .setTitle("Setup API and Webhook")
+                    .setDescription("""
+                            Select "Register for raffles" to participate in raffles or "Remove your data" to remove your data from raffle participation.
+                            """)
+                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
+                    .setColor(0xF3E5AB);
+
+            MessageEmbed messageEmbedSetup = embedBuilder.build();
+            MessageChannel messageChannelSetup = event.getChannel();
+
+            Button primary = Button.primary("testtesttest", "Register for raffles");
+            Button secondary = Button.danger("removeData", "Remove your data");
+            LOGGER.info("send message embeds for setup API and Webhook");
+            messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(primary, secondary)
+                    .queue();
+
+            EmbedBuilder eb = new EmbedBuilder()
+                    .setTitle("Raffle Bot")
+                    .setDescription("""
+                            Note: Alphabot Premium is REQUIRED for this to work
+                            
+                            Setup Guide:
+
+                            Create your own Discord server and generate a webhook. Save this webhook
+
+                            Head over to AlphaBot and generate an API Key. Make sure you save this API key.
+
+                            Interact with the bot above filling out the correct information, and you should get a "Webhook Valid" message.
+
+                            Once you have completed the steps, you now have an auto giveaway joiner for all the AlphaBots raffles.
+                            """)
+                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
+                    .setColor(0xF3E5AB);
+
+            MessageEmbed messageEmbed = eb.build();
+            LOGGER.info("send message embeds for description");
+            messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
         }
     }
 
@@ -228,11 +293,15 @@ public class Listeners extends ListenerAdapter {
             }
 
             User user = member.getUser();
+            String guildName = member.getGuild().getName();
+            String guildId = member.getGuild().getId();
             String discordName;
+
+            Guild guild = guildService.updateIfNewOrChanged(guildName, guildId);
 
             Client clientByDiscordId = clientRepository.findByDiscordId(member.getId());
             if (clientByDiscordId == null) {
-                Client client = new Client(webhook, apiKey, member.getId(), user.getName());
+                Client client = new Client(webhook, apiKey, member.getId(), user.getName(), guildId, guild.getSubscriptionEndDate());
                 LOGGER.info("Creating new client: " + client);
                 clientRepository.save(client);
                 discordName = client.getDiscordName();
@@ -240,10 +309,12 @@ public class Listeners extends ListenerAdapter {
                 LOGGER.info("Updating existing client: " + clientByDiscordId + "\n" +
                         webhook + "\n" +
                         apiKey + "\n" +
-                        user.getName());
+                        user.getName() + "\n" +
+                        guildName);
                 clientByDiscordId.setDiscordWebhook(webhook);
                 clientByDiscordId.setRaffleKey(apiKey);
                 clientByDiscordId.setDiscordName(user.getName());
+//                clientByDiscordId.setSubscriptionEndDate(guild.getSubscriptionEndDate());
                 clientRepository.save(clientByDiscordId);
                 discordName = clientByDiscordId.getDiscordName();
             }
@@ -253,6 +324,45 @@ public class Listeners extends ListenerAdapter {
                 event.reply("Registration successful!").setEphemeral(true).queue();
             } catch (Exception e) {
                 event.reply("Webhook URL is invalid").setEphemeral(true).queue();
+            }
+
+        } else if (event.getModalId().equals("testtesttest")) {
+
+            String webhook = Objects.requireNonNull(event.getValue("webhook")).getAsString();
+            String apiKey = Objects.requireNonNull(event.getValue("apiKey")).getAsString();
+
+            Member member = event.getMember();
+            if (member == null) {
+                LOGGER.info("Registration failed!\n Couldn't retrieve discord user\n" + webhook + "\n" + apiKey);
+                event.reply("Registration failed!\n Couldn't retrieve discord user").setEphemeral(true).queue();
+                return;
+            }
+
+            User user = member.getUser();
+            String guildName = member.getGuild().getName();
+            String guildId = member.getGuild().getId();
+            String discordName;
+
+            Guild guild = guildService.updateIfNewOrChanged(guildName, guildId);
+
+            Client clientByDiscordId = clientRepository.findByDiscordId(member.getId());
+            if (clientByDiscordId == null) {
+                Client client = new Client(webhook, apiKey, member.getId(), user.getName(), guildId, guild.getSubscriptionEndDate());
+                LOGGER.info("Creating new client: " + client);
+                clientRepository.save(client);
+                discordName = client.getDiscordName();
+            } else {
+                LOGGER.info("Updating existing client: " + clientByDiscordId + "\n" +
+                        webhook + "\n" +
+                        apiKey + "\n" +
+                        user.getName() + "\n" +
+                        guildName);
+                clientByDiscordId.setDiscordWebhook(webhook);
+                clientByDiscordId.setRaffleKey(apiKey);
+                clientByDiscordId.setDiscordName(user.getName());
+//                clientByDiscordId.setSubscriptionEndDate(guild.getSubscriptionEndDate());
+                clientRepository.save(clientByDiscordId);
+                discordName = clientByDiscordId.getDiscordName();
             }
 
         }

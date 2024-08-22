@@ -7,11 +7,13 @@ import com.alphabot.register.integration.alphabot.dto.Error;
 import com.alphabot.register.integration.alphabot.dto.Register;
 import com.alphabot.register.module.Client;
 import com.alphabot.register.repository.ClientRepository;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class AlphaBotService {
     }
 
     public void registerRaffle(String slug, String raffleName) {
-        List<Client> clientList =  clientRepository.findAll();
+        List<Client> clientList =  clientRepository.findBySubscriptionEndDateAfter(LocalDateTime.now());
 
         for (Client client : clientList) {
             try {
@@ -46,36 +48,45 @@ public class AlphaBotService {
                 }
 
 //              If failed send embed msg to webhook
-
-                String returnString;
-                if (register.getRegisterData() == null)
-                    returnString = register.getErrors().stream().map(Error::getMessage).collect(Collectors.joining(", "));
-                else
-                    returnString = register.getRegisterData().getResultMd();
-                if (returnString == null)
-                    returnString = register.getRegisterData().getValidationReason();
-
+                String returnString = getErrorString(register);
                 if (returnString == null)
                     continue;
 
                 returnString = returnString.toLowerCase().trim();
 
-                if (returnString.contains("invalid api")) {
-                    returnString = "Refresh API Key";
-                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
-                            "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
-                } else if (returnString.contains("connect twitter") || returnString.contains("re-connect your twitter")) {
-                    returnString = "Reconnect Twitter";
-                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
-                            "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
-                } else if (returnString.contains("connect discord") || returnString.contains("re-connect your discord")) {
-                    returnString = "Reconnect Discord";
-                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
-                            "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
-                }
+                sendMessageIfSpecificErrorFound(raffleName, client, returnString);
 
             } catch (Exception ignore){}
         }
 
+    }
+
+    private void sendMessageIfSpecificErrorFound(String raffleName, Client client, String returnString) {
+        if (returnString.contains("invalid api")) {
+            returnString = "Refresh API Key";
+            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
+                    "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+        } else if (returnString.contains("connect twitter") || returnString.contains("re-connect your twitter")) {
+            returnString = "Reconnect Twitter";
+            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
+                    "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+        } else if (returnString.contains("connect discord") || returnString.contains("re-connect your discord")) {
+            returnString = "Reconnect Discord";
+            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
+                    "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+        }
+    }
+
+    @Nullable
+    private String getErrorString(Register register) {
+        String returnString;
+        if (register.getRegisterData() == null)
+            returnString = register.getErrors().stream().map(Error::getMessage).collect(Collectors.joining(", "));
+        else
+            returnString = register.getRegisterData().getResultMd();
+        if (returnString == null)
+            returnString = register.getRegisterData().getValidationReason();
+
+        return returnString;
     }
 }
