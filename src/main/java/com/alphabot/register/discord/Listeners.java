@@ -21,6 +21,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,12 @@ public class Listeners extends ListenerAdapter {
     Logger LOGGER = LoggerFactory.getLogger(Listeners.class);
 
     @Override
-    public void onReady(ReadyEvent event) {
+    public void onReady(@NotNull ReadyEvent event) {
         LOGGER.info("Discord JDA started successfully");
     }
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (event.getName().equals("register")) {
             TextInput subject = TextInput.create("webhook", "Discord webhook", TextInputStyle.SHORT)
                     .setPlaceholder("Your discord webhook to get messaged to")
@@ -70,7 +71,7 @@ public class Listeners extends ListenerAdapter {
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
         if (message.startsWith("!acceptRafflesENRU")) {
             EmbedBuilder embedBuilder = new EmbedBuilder()

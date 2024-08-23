@@ -13,14 +13,14 @@ import java.util.concurrent.Executor;
 public class AsyncConfig {
 
 //    @Bean(name = "taskExecutor")
-    public Executor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);  // Initial number of threads
-        executor.setMaxPoolSize(2);  // Maximum number of threads
-        executor.setQueueCapacity(50);  // Queue size before new threads are created
-        executor.setThreadNamePrefix("RaffleQueueConsumer-");
-        executor.initialize();
-        return executor;
-    }
+//    public Executor taskExecutor() {
+//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+//        executor.setCorePoolSize(2);  // Initial number of threads
+//        executor.setMaxPoolSize(2);  // Maximum number of threads
+//        executor.setQueueCapacity(50);  // Queue size before new threads are created
+//        executor.setThreadNamePrefix("RaffleQueueConsumer-");
+//        executor.initialize();
+//        return executor;
+//    }
 
 }
