@@ -21,6 +21,9 @@ public class Guild {
     @Column(name = "subscriptionEndDate")
     private LocalDateTime subscriptionEndDate;
 
+    @Column(name = "created")
+    private LocalDateTime created = LocalDateTime.now();
+
     public Guild() {
     }
 
@@ -60,5 +63,13 @@ public class Guild {
 
     public void setGuildId(String guildId) {
         this.guildId = guildId;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 }
