@@ -8,6 +8,7 @@ import com.alphabot.register.integration.alphabot.dto.RegisterRequest;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -22,12 +23,13 @@ public class Alphabot {
 
     Logger LOGGER = LoggerFactory.getLogger(Alphabot.class);
     Gson gson = new Gson();
+
     ConfigLoader configLoader = new ConfigLoader();
+    @Autowired
+    HttpClient httpClient;
     private final String authenticationKey = configLoader.getProperty("alphabot.authentication");
 
     public Raffle getLatestRaffles(String pageSize) {
-        // Create an instance of HttpClient
-        HttpClient client = HttpClient.newHttpClient();
 
         // Create the HttpRequest
         HttpRequest request = HttpRequest.newBuilder()
@@ -39,7 +41,7 @@ public class Alphabot {
 
         // Send the request and get the response
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             LOGGER.info("raffle retrieval successful");
             return gson.fromJson(response.body(), Raffle.class);
         } catch (Exception e) {
@@ -51,9 +53,6 @@ public class Alphabot {
 
     // Get all Raffles
     public Set<RaffleData> getAllRaffles() {
-
-        // Create an instance of HttpClient
-        HttpClient client = HttpClient.newHttpClient();
 
         Set<RaffleData> raffleData = new HashSet<>();
         boolean lastPage = false;
@@ -69,9 +68,9 @@ public class Alphabot {
                     .GET().build();
 
             // Send the request and get the response
-                Raffle raffle = null;
+            Raffle raffle = null;
             try {
-                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
                 raffle = gson.fromJson(response.body(), Raffle.class);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -105,9 +104,6 @@ public class Alphabot {
     }
 
     public Register registerRaffle(String slug, String clientKey) {
-        // Create an instance of HttpClient
-        HttpClient httpClient = HttpClient.newHttpClient();
-
         // Create an instance of the request data
         RegisterRequest requestData = new RegisterRequest(slug);
 
