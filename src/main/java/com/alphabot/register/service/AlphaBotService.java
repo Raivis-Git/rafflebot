@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 
@@ -36,27 +36,32 @@ public class AlphaBotService {
     }
 
     public void registerRaffle(String slug, String raffleName) {
-        List<Client> clientList =  clientRepository.findBySubscriptionEndDateAfter(LocalDateTime.now());
+        try {
+            Collection<Client> clientList = clientRepository.findBySubscriptionEndDateAfter(LocalDateTime.now());
 
-        for (Client client : clientList) {
-            try {
-                Register register = alphabot.registerRaffle(slug, client.getRaffleKey());
-                if (register.getSuccess()) {
-                    discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration successful",
-                            "Registered to: \n" + raffleName, client.getDiscordName(), true);
-                    continue;
-                }
+            for (Client client : clientList) {
+                try {
+                    Register register = alphabot.registerRaffle(slug, client.getRaffleKey());
+                    if (register.getSuccess()) {
+                        discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration successful",
+                                "Registered to: \n" + raffleName, client.getDiscordName(), true);
+                        continue;
+                    }
 
 //              If failed send embed msg to webhook
-                String returnString = getErrorString(register);
-                if (returnString == null)
-                    continue;
+                    String returnString = getErrorString(register);
+                    if (returnString == null)
+                        continue;
 
-                returnString = returnString.toLowerCase().trim();
+                    returnString = returnString.toLowerCase().trim();
 
-                sendMessageIfSpecificErrorFound(raffleName, client, returnString);
+                    sendMessageIfSpecificErrorFound(raffleName, client, returnString);
 
-            } catch (Exception ignore){}
+                } catch (Exception ignore) {
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
         }
 
     }
