@@ -19,7 +19,7 @@ public class RaffleQueueConsumerService {
 
     boolean isRunning = false;
 
-//    @Async("taskExecutor")
+    @Async("taskExecutor")
     public void startConsuming() {
         if (!isRunning) {
             try {

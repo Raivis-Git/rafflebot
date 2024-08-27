@@ -308,15 +308,23 @@ public class Listeners extends ListenerAdapter {
                 discordName = client.getDiscordName();
             } else {
                 LOGGER.info("Updating existing client: " + clientByDiscordId + "\n" +
-                        webhook + "\n" +
-                        apiKey + "\n" +
-                        user.getName() + "\n" +
-                        guildName);
-                clientByDiscordId.setDiscordWebhook(webhook);
+                        "webhook: " + webhook + "\n" +
+                        "apikey: " + apiKey + "\n" +
+                        "name: " + user.getName() + "\n" +
+                        "guild: " + guildName);
+
+                if (!webhook.isEmpty())
+                    clientByDiscordId.setDiscordWebhook(webhook);
+
                 clientByDiscordId.setRaffleKey(apiKey);
                 clientByDiscordId.setDiscordName(user.getName());
-//                clientByDiscordId.setSubscriptionEndDate(guild.getSubscriptionEndDate());
+                clientByDiscordId.setSubscriptionEndDate(guild.getSubscriptionEndDate());
                 clientRepository.save(clientByDiscordId);
+
+                LOGGER.info("webhook: " + webhook + "\n" +
+                        "apikey: " + apiKey + "\n" +
+                        "name: " + user.getName() + "\n" +
+                        "guild: " + guildName);
                 discordName = clientByDiscordId.getDiscordName();
             }
             try {
