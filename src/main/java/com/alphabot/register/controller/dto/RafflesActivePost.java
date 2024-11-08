@@ -7,6 +7,16 @@ public class RafflesActivePost {
     String hash;
     RequestRaffleData data;
 
+    @Override
+    public String toString() {
+        return "RafflesActivePost{" +
+                "event='" + event + '\'' +
+                ", timestamp=" + timestamp +
+                ", hash='" + hash + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public String getEvent() {
         return event;
     }

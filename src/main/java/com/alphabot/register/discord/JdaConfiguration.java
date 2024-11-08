@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +17,8 @@ import java.util.List;
 public class JdaConfiguration {
 
     ConfigLoader configLoader = new ConfigLoader();
+    @Value("${discord.token}")
+    public String discordToken;
 
     @Bean
     public JDABuilder jdaBuilder() {

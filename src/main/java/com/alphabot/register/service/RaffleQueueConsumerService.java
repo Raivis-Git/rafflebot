@@ -24,12 +24,14 @@ public class RaffleQueueConsumerService {
         if (!isRunning) {
             try {
                 while (raffleQueueService.hasData()) {
+                    LOGGER.info("Task executor started running!");
                     isRunning = true;
                     RaffleDAO data = raffleQueueService.takeFromRaffleQueue();
                     process(data);
                 }
             } finally {
                 isRunning = false;
+                LOGGER.info("Task executor stopped running!");
             }
         }
     }

@@ -1,20 +1,22 @@
 package com.alphabot.register.service;
 
-import com.alphabot.register.config.ConfigLoader;
+import com.alphabot.register.controller.dto.*;
 import com.alphabot.register.discord.DiscordMain;
 import com.alphabot.register.integration.alphabot.Alphabot;
 import com.alphabot.register.integration.alphabot.dto.Error;
 import com.alphabot.register.integration.alphabot.dto.Register;
 import com.alphabot.register.module.Client;
 import com.alphabot.register.repository.ClientRepository;
+import com.alphabot.register.util.*;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -26,11 +28,11 @@ public class AlphaBotService {
     @Autowired
     private Alphabot alphabot;
     @Autowired
-    private ConfigLoader configLoader;
-    @Autowired
     private DiscordMain discordMain;
+    @Autowired
+    private TelegramService telegramService;
 
-    Logger LOGGER = LoggerFactory.getLogger(AlphaBotService.class);
+    Logger logger = LoggerFactory.getLogger(AlphaBotService.class);
 
     public AlphaBotService() {
     }
@@ -61,24 +63,32 @@ public class AlphaBotService {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            logger.error(e.getMessage());
         }
 
     }
 
     private void sendMessageIfSpecificErrorFound(String raffleName, Client client, String returnString) {
+        String messageToSend = "Raffle: \n{0}\n Reason: {1}\n{2}";
+        String title = "Raffle registration failed";
+
         if (returnString.contains("invalid api")) {
             returnString = "Refresh API Key";
-            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
-                    "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+            messageToSend = MessageFormat.format(messageToSend, raffleName, returnString, client.getDiscordName());
+            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), title, messageToSend, client.getDiscordName(), false);
+            telegramService.sendMessage(client, messageToSend);
+
         } else if (returnString.contains("connect twitter") || returnString.contains("re-connect your twitter")) {
             returnString = "Reconnect Twitter";
-            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
-                    "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+            messageToSend = MessageFormat.format(messageToSend, raffleName, returnString, client.getDiscordName());
+            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), title, messageToSend, client.getDiscordName(), false);
+            telegramService.sendMessage(client, messageToSend);
+
         } else if (returnString.contains("connect discord") || returnString.contains("re-connect your discord")) {
             returnString = "Reconnect Discord";
-            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration failed",
-                    "Raffle: \n" + raffleName + "\n Reason: " + returnString + "\n", client.getDiscordName(), false);
+            messageToSend = MessageFormat.format(messageToSend, raffleName, returnString, client.getDiscordName());
+            discordMain.sendEmbedWebhook(client.getDiscordWebhook(), title, messageToSend, client.getDiscordName(), false);
+            telegramService.sendMessage(client, messageToSend);
         }
     }
 
@@ -94,4 +104,26 @@ public class AlphaBotService {
 
         return returnString;
     }
+
+    public TelegramRegisterResponse registerTelegram(Long telegramId, String telegramUserName, String apiKey) {
+        TelegramRegisterResponse registerResponse = new TelegramRegisterResponse();
+
+        if (!ValidationUtils.isValidApiKey(apiKey))
+            return registerResponse.setErrorWithMessage("Key is not valid");
+
+        Client client = clientRepository.findByRaffleKey(apiKey);
+        if (client == null)
+            return registerResponse.setErrorWithMessage("Couldn't register current key");
+
+        if (telegramId.equals(Long.getLong(client.getTelegramId())))
+            return registerResponse.setSuccess(true);
+
+        client.setTelegramId(telegramId.toString());
+        client.setTelegramUserName(telegramUserName);
+        clientRepository.save(client);
+
+
+        return registerResponse.setSuccess(true);
+    }
+
 }

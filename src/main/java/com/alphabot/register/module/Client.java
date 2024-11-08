@@ -21,14 +21,26 @@ public class Client {
     @Column(name = "discordId", unique = true)
     String discordId;
 
+    @Column(name = "telegramId", unique = true)
+    String telegramId;
+
+    @Column(name = "telegramUserName")
+    String telegramUserName;
+
     @Column(name = "discordName")
     String discordName;
 
     @Column(name = "groupId")
     String groupId;
 
+    @Column(name = "sendToTelegram", columnDefinition = "false")
+    Boolean sendToTelegram;
+
     @Column(name = "created")
     LocalDateTime created = LocalDateTime.now();
+
+    @Column(name = "updated")
+    LocalDateTime updated = LocalDateTime.now();
 
     @Column(name = "subscriptionEndDate")
     LocalDateTime subscriptionEndDate;
@@ -43,6 +55,11 @@ public class Client {
         this.discordName = discordName;
         this.groupId = groupId;
         this.subscriptionEndDate = subscriptionEndDate;
+    }
+
+    public Client(String discordWebhook, String raffleKey) {
+        this.discordWebhook = discordWebhook;
+        this.raffleKey = raffleKey;
     }
 
     @Override
@@ -121,5 +138,37 @@ public class Client {
 
     public void setSubscriptionEndDate(LocalDateTime subscriptionEndDate) {
         this.subscriptionEndDate = subscriptionEndDate;
+    }
+
+    public String getTelegramId() {
+        return telegramId;
+    }
+
+    public void setTelegramId(String telegramId) {
+        this.telegramId = telegramId;
+    }
+
+    public Boolean getSendToTelegram() {
+        return sendToTelegram;
+    }
+
+    public void setSendToTelegram(Boolean sendToTelegram) {
+        this.sendToTelegram = sendToTelegram;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
+    }
+
+    public String getTelegramUserName() {
+        return telegramUserName;
+    }
+
+    public void setTelegramUserName(String telegramUserName) {
+        this.telegramUserName = telegramUserName;
     }
 }

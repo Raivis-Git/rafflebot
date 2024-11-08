@@ -8,7 +8,7 @@ import com.alphabot.register.integration.alphabot.dto.RegisterRequest;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -27,7 +27,8 @@ public class Alphabot {
     ConfigLoader configLoader = new ConfigLoader();
     @Autowired
     HttpClient httpClient;
-    private final String authenticationKey = configLoader.getProperty("alphabot.authentication");
+    @Value("${alphabot.authentication}")
+    private String authenticationKey;
 
     public Raffle getLatestRaffles(String pageSize) {
 

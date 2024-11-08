@@ -4,6 +4,7 @@ import com.alphabot.register.module.Client;
 import com.alphabot.register.module.Guild;
 import com.alphabot.register.repository.ClientRepository;
 import com.alphabot.register.service.GuildService;
+import com.alphabot.register.util.*;
 import jakarta.annotation.Nonnull;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -48,14 +49,14 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
         if (event.getName().equals("register")) {
-            TextInput subject = TextInput.create("webhook", "Discord webhook", TextInputStyle.SHORT)
+            TextInput discordWebhookInput = TextInput.create("webhook", "Discord webhook", TextInputStyle.SHORT)
                     .setPlaceholder("Your discord webhook to get messaged to")
                     .setMinLength(10)
                     .setMaxLength(2000)
                     .setRequired(false)
                     .build();
 
-            TextInput body = TextInput.create("apiKey", "Alphabot API key", TextInputStyle.SHORT)
+            TextInput alphaBotApiKeyInput = TextInput.create("apiKey", "Alphabot API key", TextInputStyle.SHORT)
                     .setPlaceholder("Your alphabot api key")
                     .setMinLength(10)
                     .setMaxLength(255)
@@ -63,7 +64,7 @@ public class Listeners extends ListenerAdapter {
                     .build();
 
             Modal modal = Modal.create("raffleRegister", "Raffles registration")
-                    .addComponents(ActionRow.of(subject), ActionRow.of(body))
+                    .addComponents(ActionRow.of(alphaBotApiKeyInput), ActionRow.of(discordWebhookInput))
                     .build();
 
             event.replyModal(modal).queue();
@@ -74,27 +75,10 @@ public class Listeners extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
         if (message.startsWith("!acceptRafflesENRU")) {
-            EmbedBuilder embedBuilder = new EmbedBuilder()
-                    .setTitle("Setup API and Webhook")
-                    .setDescription("""
-                            Select "Register for raffles" to participate in raffles or "Remove your data" to remove your data from raffle participation.
-                            ----------------------------------------------
-                            Выберите "Register for raffles", чтобы участвовать в розыгрышах, или "Remove your data", чтобы удалить ваши данные из участия в розыгрышах.""")
-                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
-                    .setColor(0xF3E5AB);
-
-            MessageEmbed messageEmbedSetup = embedBuilder.build();
             MessageChannel messageChannelSetup = event.getChannel();
-
-            Button primary = Button.primary("register", "Register for raffles");
-            Button secondary = Button.danger("removeData", "Remove your data");
-            LOGGER.info("send message embeds for setup API and Webhook");
-            messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(primary, secondary)
-                    .queue();
-
-            EmbedBuilder eb = new EmbedBuilder()
-                    .setTitle("Raffle Bot")
-                    .setDescription("""
+            sendFunctionalMessage(messageChannelSetup);
+            sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
+                            """
                             Note: Alphabot Premium is required for this setup.
                             
                             Setup Instructions:
@@ -135,35 +119,13 @@ public class Listeners extends ListenerAdapter {
                               3.Взаимодействуйте с ботом, предоставив ему URL вебхука и API-ключ.
                             После завершения этих шагов бот будет автоматически участвовать во всех розыгрышах, проводимых AlphaBot, в которых вы соответствуете требованиям сервера и роли в Discord.
                             
-                            Подробную информацию и наглядное руководство можно найти в видео ниже.""")
-                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
-                    .setColor(0xF3E5AB);
-
-            MessageEmbed messageEmbed = eb.build();
-            LOGGER.info("send message embeds for description");
-            messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
+                            Подробную информацию и наглядное руководство можно найти в видео ниже.""");
 
         } else if (message.startsWith("!acceptRafflesEN")) {
-            EmbedBuilder embedBuilder = new EmbedBuilder()
-                    .setTitle("Setup API and Webhook")
-                    .setDescription("""
-                            Select "Register for raffles" to participate in raffles or "Remove your data" to remove your data from raffle participation.
-                            """)
-                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
-                    .setColor(0xF3E5AB);
-
-            MessageEmbed messageEmbedSetup = embedBuilder.build();
             MessageChannel messageChannelSetup = event.getChannel();
-
-            Button primary = Button.primary("register", "Register for raffles");
-            Button secondary = Button.danger("removeData", "Remove your data");
-            LOGGER.info("send message embeds for setup API and Webhook");
-            messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(primary, secondary)
-                    .queue();
-
-            EmbedBuilder eb = new EmbedBuilder()
-                    .setTitle("Raffle Bot")
-                    .setDescription("""
+            sendFunctionalMessage(messageChannelSetup);
+            sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
+                    """
                             Note: Alphabot Premium is required for this setup.
                             
                             Setup Instructions:
@@ -183,34 +145,13 @@ public class Listeners extends ListenerAdapter {
                             
                             
                             Note: For detailed information and a visual guide, refer to the video tutorial below.
-                            """)
-                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
-                    .setColor(0xF3E5AB);
-
-            MessageEmbed messageEmbed = eb.build();
-            LOGGER.info("send message embeds for description");
-            messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
+                            """);
 
         } else if (message.startsWith("!acceptRafflesRU")) {
-            EmbedBuilder embedBuilder = new EmbedBuilder()
-                    .setTitle("Setup API and Webhook")
-                    .setDescription("""
-                            Выберите "Register for raffles", чтобы участвовать в розыгрышах, или "Remove your data", чтобы удалить ваши данные из участия в розыгрышах.""")
-                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
-                    .setColor(0xF3E5AB);
-
-            MessageEmbed messageEmbedSetup = embedBuilder.build();
             MessageChannel messageChannelSetup = event.getChannel();
-
-            Button primary = Button.primary("register", "Register for raffles");
-            Button secondary = Button.danger("removeData", "Remove your data");
-            LOGGER.info("send message embeds for setup API and Webhook");
-            messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(primary, secondary)
-                    .queue();
-
-            EmbedBuilder eb = new EmbedBuilder()
-                    .setTitle("Raffle Bot")
-                    .setDescription("""
+            sendFunctionalMessage(messageChannelSetup);
+            sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
+                    """
                             Настройка бота для розыгрышей
                             
                             Требуется: Alphabot Premium
@@ -230,35 +171,13 @@ public class Listeners extends ListenerAdapter {
                               3.Взаимодействуйте с ботом, предоставив ему URL вебхука и API-ключ.
                             После завершения этих шагов бот будет автоматически участвовать во всех розыгрышах, проводимых AlphaBot, в которых вы соответствуете требованиям сервера и роли в Discord.
                             
-                            Подробную информацию и наглядное руководство можно найти в видео ниже.""")
-                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
-                    .setColor(0xF3E5AB);
-
-            MessageEmbed messageEmbed = eb.build();
-            LOGGER.info("send message embeds for description");
-            messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
+                            Подробную информацию и наглядное руководство можно найти в видео ниже.""");
 
         } else if (message.startsWith("!testtesttest")) {
-            EmbedBuilder embedBuilder = new EmbedBuilder()
-                    .setTitle("Setup API and Webhook")
-                    .setDescription("""
-                            Select "Register for raffles" to participate in raffles or "Remove your data" to remove your data from raffle participation.
-                            """)
-                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
-                    .setColor(0xF3E5AB);
-
-            MessageEmbed messageEmbedSetup = embedBuilder.build();
             MessageChannel messageChannelSetup = event.getChannel();
-
-            Button primary = Button.primary("testtesttest", "Register for raffles");
-            Button secondary = Button.danger("removeData", "Remove your data");
-            LOGGER.info("send message embeds for setup API and Webhook");
-            messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(primary, secondary)
-                    .queue();
-
-            EmbedBuilder eb = new EmbedBuilder()
-                    .setTitle("Raffle Bot")
-                    .setDescription("""
+            sendFunctionalMessage(messageChannelSetup);
+            sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
+                    """
                             Note: Alphabot Premium is REQUIRED for this to work
                             
                             Setup Guide:
@@ -270,13 +189,7 @@ public class Listeners extends ListenerAdapter {
                             Interact with the bot above filling out the correct information, and you should get a "Webhook Valid" message.
 
                             Once you have completed the steps, you now have an auto giveaway joiner for all the AlphaBots raffles.
-                            """)
-                    .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
-                    .setColor(0xF3E5AB);
-
-            MessageEmbed messageEmbed = eb.build();
-            LOGGER.info("send message embeds for description");
-            messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
+                            """);
         }
     }
 
@@ -286,10 +199,22 @@ public class Listeners extends ListenerAdapter {
             String webhook = Objects.requireNonNull(event.getValue("webhook")).getAsString();
             String apiKey = Objects.requireNonNull(event.getValue("apiKey")).getAsString();
 
+            if (!ValidationUtils.isValidWebhookUrl(webhook)) {
+                LOGGER.info("Registration failed! Webhook is not valid! " + webhook);
+                event.reply("Registration failed! Webhook is not valid!").setEphemeral(true).queue();
+                return;
+            }
+
+            if (!ValidationUtils.isValidApiKey(apiKey)) {
+                LOGGER.info("Registration failed! Api key is not valid! " + apiKey);
+                event.reply("Registration failed! Api key is not valid!").setEphemeral(true).queue();
+                return;
+            }
+
             Member member = event.getMember();
             if (member == null) {
-                LOGGER.info("Registration failed!\n Couldn't retrieve discord user\n" + webhook + "\n" + apiKey);
-                event.reply("Registration failed!\n Couldn't retrieve discord user").setEphemeral(true).queue();
+                LOGGER.info("Registration failed! Couldn't retrieve discord user" + webhook + "\n" + apiKey);
+                event.reply("Registration failed! Couldn't retrieve discord user").setEphemeral(true).queue();
                 return;
             }
 
@@ -384,6 +309,72 @@ public class Listeners extends ListenerAdapter {
         // Respond to button clicks based on ID
         switch (buttonId) {
             case "register" -> {
+                Member member = event.getMember();
+                if (member == null) {
+                    event.reply("Couldn't retrieve member data").setEphemeral(true).queue();
+                    return;
+                }
+
+                Client client = getExistingClientData(member.getId());
+                TextInput subject = TextInput.create("webhook", "Discord webhook", TextInputStyle.SHORT)
+                        .setPlaceholder("Your discord webhook to get messaged to")
+                        .setMinLength(50)
+                        .setMaxLength(200)
+                        .setRequired(false)
+                        .setValue(client.getDiscordWebhook())
+                        .build();
+                TextInput body = TextInput.create("apiKey", "Alphabot API key", TextInputStyle.SHORT)
+                        .setPlaceholder("Your alphabot api key")
+                        .setMinLength(10)
+                        .setMaxLength(255)
+                        .setRequired(true)
+                        .setValue(client.getRaffleKey())
+                        .build();
+                Modal modal = Modal.create("raffleRegister", "Raffles registration")
+                        .addComponents(
+                                ActionRow.of(subject),
+                                ActionRow.of(body))
+                        .build();
+                event.replyModal(modal).queue();
+            }
+            case "removeData" -> {
+                Client client = clientRepository.findByDiscordId(event.getMember().getId());
+                if (client != null)
+                    clientRepository.delete(client);
+
+                event.reply("Removed from raffle").setEphemeral(true).queue();
+            }
+            case "enableSendErrorsToTelegram" -> {
+                Client client = clientRepository.findByDiscordId(event.getMember().getId());
+                if (client == null) {
+                    event.reply("You are not registered for raffles").setEphemeral(true).queue();
+                    break;
+                }
+                if (client.getSendToTelegram()) {
+                    event.reply("Already enabled").setEphemeral(true).queue();
+                    break;
+                }
+                client.setSendToTelegram(true);
+                clientRepository.save(client);
+                event.reply("Your error messages will be sent to telegram").setEphemeral(true).queue();
+            }
+            case "disableSendErrorsToTelegram" -> {
+                Client client = clientRepository.findByDiscordId(event.getMember().getId());
+                if (client == null) {
+                    event.reply("You are not registered for raffles").setEphemeral(true).queue();
+                    break;
+                }
+
+                if (!client.getSendToTelegram()) {
+                    event.reply("Already disabled").setEphemeral(true).queue();
+                    break;
+                }
+
+                client.setSendToTelegram(false);
+                clientRepository.save(client);
+                event.reply("Your will no longer receive error messages on telegram").setEphemeral(true).queue();
+            }
+            case "testtesttest" -> {
                 TextInput subject = TextInput.create("webhook", "Discord webhook", TextInputStyle.SHORT)
                         .setPlaceholder("Your discord webhook to get messaged to")
                         .setMinLength(10)
@@ -396,19 +387,65 @@ public class Listeners extends ListenerAdapter {
                         .setMaxLength(255)
                         .setRequired(true)
                         .build();
-                Modal modal = Modal.create("raffleRegister", "Raffles registration")
+
+                Modal modal = Modal.create("testtesttest", "Raffles registration")
                         .addComponents(ActionRow.of(subject), ActionRow.of(body))
                         .build();
                 event.replyModal(modal).queue();
             }
-            case "removeData" -> {
-                Client client = clientRepository.findByDiscordId(event.getMember().getId());
-                if (client != null)
-                    clientRepository.delete(client);
-
-                event.reply("Removed from raffle").setEphemeral(true).queue();
-            }
         }
     }
 
+    private void sendFunctionalMessage(MessageChannel messageChannelSetup) {
+        if (messageChannelSetup == null) {
+            LOGGER.info("Message channel is null");
+            return;
+        }
+
+        EmbedBuilder embedBuilder = new EmbedBuilder()
+                .setTitle("Setup API and Webhook")
+                .setDescription("""
+                            Select "Register for raffles" to participate in raffles or "Remove your data" to remove your data from raffle participation.
+                            """)
+                .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
+                .setColor(0xF3E5AB);
+
+        MessageEmbed messageEmbedSetup = embedBuilder.build();
+
+        Button registerButton = Button.primary("register", "Register for raffles");
+        Button removeDataButton = Button.danger("removeData", "Remove your data");
+        Button enableSendErrorsTelegramButton = Button.secondary("enableSendErrorsToTelegram", "Enable errors telegram");
+        Button disableSendErrorsTelegramButton = Button.secondary("disableSendErrorsToTelegram", "Disable errors telegram");
+        LOGGER.info("send message embeds for setup API and Webhook to: " + messageChannelSetup.getName());
+        messageChannelSetup.sendMessageEmbeds(messageEmbedSetup).setActionRow(registerButton, removeDataButton, enableSendErrorsTelegramButton, disableSendErrorsTelegramButton)
+                .queue();
+    }
+
+    private void sendDescriptionMessage(MessageChannel messageChannelSetup, String title, String description) {
+        if (messageChannelSetup == null) {
+            LOGGER.info("Message channel is null");
+            return;
+        }
+        EmbedBuilder descriptionEmbedBuilder = new EmbedBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setFooter("Raffle Bot","https://images.blur.io/_blur-prod/0x9f001721bb087fbbcd6fef2c140ed6892760e71b/724-69c69ff5da9d4454?w=1024")
+                .setColor(0xF3E5AB);
+
+        MessageEmbed messageEmbed = descriptionEmbedBuilder.build();
+        LOGGER.info("send message embeds for description");
+        messageChannelSetup.sendMessageEmbeds(messageEmbed).queue();
+    }
+
+    private Client getExistingClientData(String clientId) {
+        if (clientId == null) {
+            return new Client("", "");
+        }
+        Client client = clientRepository.findByDiscordId(Objects.requireNonNull(clientId));
+        if (client.getDiscordWebhook() == null)
+            client.setDiscordWebhook("");
+        if (client.getRaffleKey() == null)
+            client.setRaffleKey("");
+        return client;
+    }
 }
