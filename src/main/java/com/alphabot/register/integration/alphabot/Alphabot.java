@@ -1,6 +1,5 @@
 package com.alphabot.register.integration.alphabot;
 
-import com.alphabot.register.config.ConfigLoader;
 import com.alphabot.register.integration.alphabot.dto.Raffle;
 import com.alphabot.register.integration.alphabot.dto.RaffleData;
 import com.alphabot.register.integration.alphabot.dto.Register;
@@ -24,7 +23,6 @@ public class Alphabot {
     Logger LOGGER = LoggerFactory.getLogger(Alphabot.class);
     Gson gson = new Gson();
 
-    ConfigLoader configLoader = new ConfigLoader();
     @Autowired
     HttpClient httpClient;
     @Value("${alphabot.authentication}")
@@ -136,7 +134,16 @@ public class Alphabot {
         int registered = 0;
         int failedRegisters = 0;
         Set<RaffleData> raffleDataSet = getAllRaffles();
+        int i = 1;
         for (RaffleData raffleData : raffleDataSet) {
+            if (i % 50 == 0) {
+                try {
+                    Thread.sleep(60000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            i++;
             Register register = registerRaffle(raffleData.getSlug());
             if (register.getSuccess())
                 registered++;
@@ -148,12 +155,6 @@ public class Alphabot {
 
     public static void main(String[] args) {
         Alphabot alphabot = new Alphabot();
-        Raffle raffle = alphabot.getLatestRaffles("10");
-        System.out.println(raffle.toString());
-
-//        Register register = alphabot.registerRaffle("producers-x-elixir-games-bvuain");
-//        System.out.println(register);
-//
-//        alphabot.run();
+        alphabot.run();
     }
 }

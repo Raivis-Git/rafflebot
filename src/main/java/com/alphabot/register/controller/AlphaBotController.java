@@ -1,6 +1,5 @@
 package com.alphabot.register.controller;
 
-import com.alphabot.register.integration.alphabot.Alphabot;
 import com.alphabot.register.controller.dto.RafflesActivePost;
 import com.alphabot.register.service.AlphaBotService;
 import org.slf4j.Logger;
@@ -16,12 +15,6 @@ public class AlphaBotController {
     Logger logger = LoggerFactory.getLogger(AlphaBotController.class);
     @Autowired
     AlphaBotService alphaBotService;
-
-//    @GetMapping
-//    public ResponseEntity<?> getRaffles() {
-//        Alphabot alphabot = new Alphabot();
-//        return ResponseEntity.ok(alphabot.getRaffles());
-//    }
 
     @PostMapping(consumes ="application/json")
     public ResponseEntity<?> postRaffles(@RequestBody RafflesActivePost rafflesActivePost) {

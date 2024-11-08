@@ -2,7 +2,6 @@ package com.alphabot.register.controller;
 
 import com.alphabot.register.controller.dto.*;
 import com.alphabot.register.service.*;
-import com.alphabot.register.service.dto.*;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
@@ -16,9 +15,6 @@ public class TelegramBotController {
 
     @Autowired
     AlphaBotService alphaBotService;
-
-//    @Autowired
-//    TelegramMessageService telegramMessageService;
 
     @GetMapping("/test")
     public ResponseEntity<?> testConnection() {
@@ -36,11 +32,4 @@ public class TelegramBotController {
 
         return ResponseEntity.ok(registerResponse);
     }
-
-//    @GetMapping("/test1")
-//    public ResponseEntity<?> test() {
-//        telegramMessageService.sendMessage(new TelegramMessage(6829974665L, "Test Message")).subscribe();
-//        return ResponseEntity.ok("Test");
-//    }
-
 }
