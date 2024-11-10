@@ -1,6 +1,7 @@
 package com.alphabot.register.config;
 
 import org.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.reactive.function.client.*;
@@ -11,11 +12,14 @@ public class WebClientConfig {
 
     Logger logger = LoggerFactory.getLogger(WebClientConfig.class);
 
+    @Value("${telegram.url}")
+    public String baseUrl;
+
     @Bean
     public WebClient webClient() {
         return WebClient.builder()
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .baseUrl("http://localhost:8081/api/telegram")
+                .baseUrl(baseUrl)
                 .filter(logRequest())
                 .filter(logResponse())
                 .build();
