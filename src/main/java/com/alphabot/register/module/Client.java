@@ -33,7 +33,7 @@ public class Client {
     @Column(name = "groupId")
     String groupId;
 
-    @Column(name = "sendToTelegram", columnDefinition = "false")
+    @Column(name = "sendToTelegram", columnDefinition = "boolean default false")
     Boolean sendToTelegram;
 
     @Column(name = "created")
