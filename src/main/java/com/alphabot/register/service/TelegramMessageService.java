@@ -4,6 +4,7 @@ import com.alphabot.register.service.dto.*;
 import org.slf4j.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.reactive.function.client.*;
+import reactor.core.*;
 import reactor.core.publisher.*;
 
 @Service
@@ -18,7 +19,7 @@ public class TelegramMessageService {
     }
 
     // POST Request
-    public Mono<Boolean> sendMessage(TelegramMessage telegramMessage) {
+    public Disposable sendMessage(TelegramMessage telegramMessage) {
         logger.info("Send data using Telegram:\n" + telegramMessage);
         return webClient.post()
                 .uri("/sendTextMessage")
@@ -26,7 +27,7 @@ public class TelegramMessageService {
                 .retrieve()
                 .bodyToMono(Boolean.class)
                 .doOnError(error -> logger.error("Error sending message: ", error))
-                .doOnSuccess(result -> logger.debug("Successfully sent message: {}", result));
+                .doOnSuccess(result -> logger.debug("Successfully sent message: {}", result)).subscribe();
     }
 
 }
