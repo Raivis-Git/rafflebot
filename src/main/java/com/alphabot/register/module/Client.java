@@ -13,37 +13,37 @@ public class Client {
     private Long id;
 
     @Column(name = "discordWebhook", unique = true, length = 2000)
-    String discordWebhook;
+    private String discordWebhook;
 
     @Column(name = "raffleKey", nullable = false, unique = true)
-    String raffleKey;
+    private String raffleKey;
 
     @Column(name = "discordId", unique = true)
-    String discordId;
+    private String discordId;
 
     @Column(name = "telegramId", unique = true)
-    String telegramId;
+    private String telegramId;
 
     @Column(name = "telegramUserName")
-    String telegramUserName;
+    private String telegramUserName;
 
     @Column(name = "discordName")
-    String discordName;
+    private String discordName;
 
     @Column(name = "groupId")
-    String groupId;
+    private String groupId;
 
     @Column(name = "sendToTelegram", columnDefinition = "boolean default false")
-    Boolean sendToTelegram;
+    private Boolean sendToTelegram;
 
     @Column(name = "created")
-    LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime created = LocalDateTime.now();
 
     @Column(name = "updated")
-    LocalDateTime updated = LocalDateTime.now();
+    private LocalDateTime updated;
 
     @Column(name = "subscriptionEndDate")
-    LocalDateTime subscriptionEndDate;
+    private LocalDateTime subscriptionEndDate;
 
     public Client() {
     }

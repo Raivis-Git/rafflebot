@@ -128,4 +128,8 @@ public class AlphaBotService {
         return registerResponse.setSuccess(true);
     }
 
+    public Client getClientByDiscordId(String discordId) {
+        return clientRepository.findByDiscordId(discordId);
+    }
+
 }
