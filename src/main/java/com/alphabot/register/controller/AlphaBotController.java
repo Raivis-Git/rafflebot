@@ -20,8 +20,8 @@ public class AlphaBotController {
     public ResponseEntity<?> postRaffles(@RequestBody RafflesActivePost rafflesActivePost) {
         logger.info("Received a raffle post: " + rafflesActivePost);
         if ("raffle:active".equals(rafflesActivePost.getEvent())) {
-            alphaBotService.registerRaffle(rafflesActivePost.getData().getRaffle().getSlug(), rafflesActivePost.getData().getRaffle().getName());
             logger.info("Raffle slug: {}", rafflesActivePost.getData().getRaffle().getSlug());
+            alphaBotService.registerRaffle(rafflesActivePost.getData().getRaffle().getSlug(), rafflesActivePost.getData().getRaffle().getName());
         }
         return ResponseEntity.ok().build();
     }

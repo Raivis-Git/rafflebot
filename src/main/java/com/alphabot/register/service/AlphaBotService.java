@@ -44,6 +44,8 @@ public class AlphaBotService {
             for (Client client : clientList) {
                 try {
                     Register register = alphabot.registerRaffle(slug, client.getRaffleKey());
+                    logger.info("Client id: {}, telegramId: {}, sendToTelegram: {}, telegramUserName: {}"
+                            , client.getId(), client.getTelegramId(), client.getSendToTelegram(), client.getTelegramUserName());
                     if (register.getSuccess()) {
                         discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration successful",
                                 "Registered to: \n" + raffleName, client.getDiscordName(), true);
