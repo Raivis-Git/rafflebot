@@ -128,8 +128,4 @@ public class AlphaBotService {
         return registerResponse.setSuccess(true);
     }
 
-    public Collection<Client> getClientByDiscordId(String discordId) {
-        return clientRepository.findBySubscriptionEndDateAfter(LocalDateTime.now());
-    }
-
 }

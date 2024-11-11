@@ -25,11 +25,4 @@ public class AlphaBotController {
         }
         return ResponseEntity.ok().build();
     }
-
-    @GetMapping
-    @RequestMapping("/client/{discordId}")
-    public ResponseEntity<?> getClient(@PathVariable String discordId) {
-        return ResponseEntity.ok(alphaBotService.getClientByDiscordId(discordId));
-    }
-
 }

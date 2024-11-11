@@ -19,12 +19,12 @@ public class TelegramService {
         if (!client.getSendToTelegram())
             return;
 
-        String telegramIdString = client.getTelegramId();
+        String telegramIdString = client.getTelegramId().trim();
         if (!StringUtils.hasText(telegramIdString))
             return;
 
         TelegramMessage telegramMessage = new TelegramMessage();
-        telegramMessage.setTelegramId(Long.getLong(telegramIdString));
+        telegramMessage.setTelegramId(Long.parseLong(telegramIdString));
         telegramMessage.setMessage(message);
         telegramMessageService.sendMessage(telegramMessage);
     }
