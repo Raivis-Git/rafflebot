@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.*;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -128,8 +128,8 @@ public class AlphaBotService {
         return registerResponse.setSuccess(true);
     }
 
-    public Client getClientByDiscordId(String discordId) {
-        return clientRepository.findByDiscordId(discordId);
+    public Collection<Client> getClientByDiscordId(String discordId) {
+        return clientRepository.findBySubscriptionEndDateAfter(LocalDateTime.now());
     }
 
 }
