@@ -23,11 +23,6 @@ public class TelegramService {
         if (!StringUtils.hasText(telegramIdString))
             return;
 
-        logger.info("""
-                Sending message to telegram
-                telegram Id: {}\s
-                message: {}""", telegramIdString, message);
-
         TelegramMessage telegramMessage = new TelegramMessage();
         telegramMessage.setTelegramId(Long.getLong(telegramIdString));
         telegramMessage.setMessage(message);

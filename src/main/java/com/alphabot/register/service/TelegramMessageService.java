@@ -20,7 +20,10 @@ public class TelegramMessageService {
 
     // POST Request
     public Disposable sendMessage(TelegramMessage telegramMessage) {
-        logger.info("Send data using Telegram:\n" + telegramMessage);
+        logger.info("""
+                Sending message to telegram
+                telegram Id: {}\s
+                message: {}""", telegramMessage.getTelegramId(), telegramMessage.getMessage());
         return webClient.post()
                 .uri("/sendTextMessage")
                 .body(Mono.just(telegramMessage), TelegramMessage.class)
