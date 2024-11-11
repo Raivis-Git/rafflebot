@@ -19,9 +19,10 @@ public class AlphaBotController {
     @PostMapping(consumes ="application/json")
     public ResponseEntity<?> postRaffles(@RequestBody RafflesActivePost rafflesActivePost) {
         logger.info("Received a raffle post: " + rafflesActivePost);
-        if ("raffle:active".equals(rafflesActivePost.getEvent()))
+        if ("raffle:active".equals(rafflesActivePost.getEvent())) {
             alphaBotService.registerRaffle(rafflesActivePost.getData().getRaffle().getSlug(), rafflesActivePost.getData().getRaffle().getName());
-
+            logger.info("Raffle slug: {}", rafflesActivePost.getData().getRaffle().getSlug());
+        }
         return ResponseEntity.ok().build();
     }
 
