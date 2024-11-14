@@ -459,7 +459,8 @@ public class Listeners extends ListenerAdapter {
                 .setMaxLength(maxLength)
                 .setRequired(required);
 
-        if (StringUtils.hasText(value))
+        if (StringUtils.hasText(value)
+                && value.length() > minLength && value.length() < maxLength)
             textInputBuilder.setValue(value);
 
         return textInputBuilder.build();
