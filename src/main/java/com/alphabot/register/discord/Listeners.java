@@ -314,21 +314,27 @@ public class Listeners extends ListenerAdapter {
                     event.reply("Couldn't retrieve member data").setEphemeral(true).queue();
                     return;
                 }
-
+                String discordWebhook = "";
+                String raffleKey = "";
                 Client client = getExistingClientData(member.getId());
+                if (client != null) {
+                    discordWebhook = client.getDiscordWebhook();
+                    raffleKey = client.getRaffleKey();
+                }
+
                 TextInput subject = TextInput.create("webhook", "Discord webhook", TextInputStyle.SHORT)
                         .setPlaceholder("Your discord webhook to get messaged to")
                         .setMinLength(50)
                         .setMaxLength(200)
                         .setRequired(false)
-                        .setValue(client.getDiscordWebhook())
+                        .setValue(discordWebhook)
                         .build();
                 TextInput body = TextInput.create("apiKey", "Alphabot API key", TextInputStyle.SHORT)
                         .setPlaceholder("Your alphabot api key")
                         .setMinLength(10)
                         .setMaxLength(255)
                         .setRequired(true)
-                        .setValue(client.getRaffleKey())
+                        .setValue(raffleKey)
                         .build();
                 Modal modal = Modal.create("raffleRegister", "Raffles registration")
                         .addComponents(
@@ -442,6 +448,8 @@ public class Listeners extends ListenerAdapter {
             return new Client("", "");
         }
         Client client = clientRepository.findByDiscordId(Objects.requireNonNull(clientId));
+        if (client == null)
+            return null;
         if (client.getDiscordWebhook() == null)
             client.setDiscordWebhook("");
         if (client.getRaffleKey() == null)

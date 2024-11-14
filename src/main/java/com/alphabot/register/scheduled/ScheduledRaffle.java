@@ -25,6 +25,8 @@ public class ScheduledRaffle {
     RaffleQueueService raffleQueueService;
     @Value("${alphabot.scheduler.enabled:false}")
     Boolean schedulerEnabled;
+    @Value("${alphabot.scheduler.size:10}")
+    String schedulerSize;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledRaffle.class);
 
@@ -34,7 +36,7 @@ public class ScheduledRaffle {
             return;
 
         LOGGER.info("Scheduled latest raffle registration");
-        Raffle raffle = alphabot.getLatestRaffles("10");
+        Raffle raffle = alphabot.getLatestRaffles(schedulerSize);
         for (RaffleData raffleData : raffle.getData().getRaffles()) {
             String slug = raffleData.getSlug();
             if (slug == null) {
