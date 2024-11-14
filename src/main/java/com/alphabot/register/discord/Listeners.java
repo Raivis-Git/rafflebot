@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.*;
 
 import java.util.Objects;
 
@@ -322,20 +323,14 @@ public class Listeners extends ListenerAdapter {
                     raffleKey = client.getRaffleKey();
                 }
 
-                TextInput subject = TextInput.create("webhook", "Discord webhook", TextInputStyle.SHORT)
-                        .setPlaceholder("Your discord webhook to get messaged to")
-                        .setMinLength(50)
-                        .setMaxLength(200)
-                        .setRequired(false)
-                        .setValue(discordWebhook)
-                        .build();
-                TextInput body = TextInput.create("apiKey", "Alphabot API key", TextInputStyle.SHORT)
-                        .setPlaceholder("Your alphabot api key")
-                        .setMinLength(10)
-                        .setMaxLength(255)
-                        .setRequired(true)
-                        .setValue(raffleKey)
-                        .build();
+                TextInput subject = createTextInput("webhook", "Discord webhook",
+                        "Your discord webhook to get messaged to", 50, 200,
+                        false, discordWebhook);
+
+                TextInput body = createTextInput("apiKey", "Alphabot API key",
+                        "Your alphabot api key", 10, 255,
+                        true, raffleKey);
+
                 Modal modal = Modal.create("raffleRegister", "Raffles registration")
                         .addComponents(
                                 ActionRow.of(subject),
@@ -455,5 +450,18 @@ public class Listeners extends ListenerAdapter {
         if (client.getRaffleKey() == null)
             client.setRaffleKey("");
         return client;
+    }
+
+    private TextInput createTextInput(String id, String label, String placeholder, int minLength, int maxLength, boolean required, String value) {
+        TextInput.Builder textInputBuilder = TextInput.create(id, label, TextInputStyle.SHORT)
+                .setPlaceholder(placeholder)
+                .setMinLength(minLength)
+                .setMaxLength(maxLength)
+                .setRequired(required);
+
+        if (StringUtils.hasText(value))
+            textInputBuilder.setValue(value);
+
+        return textInputBuilder.build();
     }
 }
