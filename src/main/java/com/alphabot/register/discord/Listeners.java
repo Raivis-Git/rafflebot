@@ -314,8 +314,8 @@ public class Listeners extends ListenerAdapter {
                     event.reply("Couldn't retrieve member data").setEphemeral(true).queue();
                     return;
                 }
-                String discordWebhook = "";
-                String raffleKey = "";
+                String discordWebhook = "Discord webhook";
+                String raffleKey = "Alphabot API Key";
                 Client client = getExistingClientData(member.getId());
                 if (client != null) {
                     discordWebhook = client.getDiscordWebhook();
