@@ -32,7 +32,7 @@ public class RaffleQueueConsumerService {
                     LOGGER.info("Task executor started running!");
                     isRunning = true;
                     RaffleDAO data = raffleQueueService.takeFromRaffleQueue();
-                    process(data);
+                    processWithTimeout(data);
                 }
             } finally {
                 isRunning = false;
