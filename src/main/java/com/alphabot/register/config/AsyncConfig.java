@@ -17,8 +17,10 @@ public class AsyncConfig {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(2);  // Initial number of threads
         executor.setMaxPoolSize(2);  // Maximum number of threads
-        executor.setQueueCapacity(50);  // Queue size before new threads are created
+        executor.setQueueCapacity(10);  // Queue size before new threads are created
         executor.setThreadNamePrefix("RaffleQueueConsumer-");
+        executor.setAllowCoreThreadTimeOut(true);
+        executor.setKeepAliveSeconds(30); // Timeout idle threads
         executor.initialize();
         return executor;
     }
