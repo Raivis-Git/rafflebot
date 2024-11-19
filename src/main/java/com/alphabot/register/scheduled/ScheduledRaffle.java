@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Component
 public class ScheduledRaffle {
@@ -36,18 +36,21 @@ public class ScheduledRaffle {
             return;
 
         LOGGER.info("Scheduled latest raffle registration");
-        Raffle raffle = alphabot.getLatestRaffles(schedulerSize);
-        for (RaffleData raffleData : raffle.getData().getRaffles()) {
-            String slug = raffleData.getSlug();
-            if (slug == null) {
-                LOGGER.info("Slug is null from schedule");
-                continue;
+
+        CompletableFuture.runAsync(() -> {
+            Raffle raffle = alphabot.getLatestRaffles(schedulerSize);
+            for (RaffleData raffleData : raffle.getData().getRaffles()) {
+                String slug = raffleData.getSlug();
+                if (slug == null) {
+                    LOGGER.info("Slug is null from schedule");
+                    continue;
+                }
+
+                raffleQueueService.addToRaffleQueue(new RaffleDAO(slug, raffleData.getName()));
             }
 
-            raffleQueueService.addToRaffleQueue(new RaffleDAO(slug, raffleData.getName()));
-        }
-
-        raffleQueueConsumerService.startConsuming();
+            raffleQueueConsumerService.startConsuming();
+        });
 
         LOGGER.info("Active threads: " + Thread.activeCount() + "\n" +
                 "Queue size: " + raffleQueueService.getQueueSize());

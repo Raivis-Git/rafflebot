@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.*;
+
 @Service
 public class RaffleQueueConsumerService {
 
@@ -21,7 +23,10 @@ public class RaffleQueueConsumerService {
 
     @Async("taskExecutor")
     public void startConsuming() {
-        if (!isRunning) {
+        CompletableFuture.runAsync(() -> {
+            if (isRunning)
+                return;
+
             try {
                 while (raffleQueueService.hasData()) {
                     LOGGER.info("Task executor started running!");
@@ -33,12 +38,24 @@ public class RaffleQueueConsumerService {
                 isRunning = false;
                 LOGGER.info("Task executor stopped running!");
             }
-        }
+        });
+
     }
 
     private void process(RaffleDAO raffleDAO) {
         alphaBotService.registerRaffle(raffleDAO.getSlug(), raffleDAO.getRaffleName());
         LOGGER.info("Processed by: " + Thread.currentThread().getName() + "--- Raffle: " + raffleDAO.getRaffleName());
+    }
+
+    private void processWithTimeout(RaffleDAO data) {
+        try {
+            CompletableFuture.supplyAsync(() -> {
+                process(data);
+                return null;
+            }).orTimeout(30, TimeUnit.SECONDS).join();
+        } catch (Exception e) {
+            LOGGER.error("Processing timeout for raffle: " + data.getSlug());
+        }
     }
 
 }
