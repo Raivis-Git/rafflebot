@@ -8,6 +8,7 @@ import com.alphabot.register.integration.alphabot.dto.Register;
 import com.alphabot.register.module.Client;
 import com.alphabot.register.repository.ClientRepository;
 import com.alphabot.register.util.*;
+import jakarta.transaction.*;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ public class AlphaBotService {
     public AlphaBotService() {
     }
 
+    @Transactional
     public void registerRaffle(String slug, String raffleName) {
         try {
             Collection<Client> clientList = clientRepository.findBySubscriptionEndDateAfter(LocalDateTime.now());
