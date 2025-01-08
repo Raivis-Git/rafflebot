@@ -19,23 +19,16 @@ public class RaffleQueueConsumerService {
     @Autowired
     private AlphaBotService alphaBotService;
 
-    boolean isRunning = false;
-
     @Async("taskExecutor")
     public void startConsuming() {
         CompletableFuture.runAsync(() -> {
-            if (isRunning)
-                return;
-
             try {
                 while (raffleQueueService.hasData()) {
                     LOGGER.info("Task executor started running!");
-                    isRunning = true;
                     RaffleDAO data = raffleQueueService.takeFromRaffleQueue();
                     processWithTimeout(data);
                 }
             } finally {
-                isRunning = false;
                 LOGGER.info("Task executor stopped running!");
             }
         });
