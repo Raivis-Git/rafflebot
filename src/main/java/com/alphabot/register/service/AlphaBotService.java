@@ -8,12 +8,12 @@ import com.alphabot.register.integration.alphabot.dto.Register;
 import com.alphabot.register.module.Client;
 import com.alphabot.register.repository.ClientRepository;
 import com.alphabot.register.util.*;
-import jakarta.transaction.*;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.*;
 import java.time.*;
@@ -38,7 +38,7 @@ public class AlphaBotService {
     public AlphaBotService() {
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public void registerRaffle(String slug, String raffleName) {
         try {
             Collection<Client> clientList = clientRepository.findBySubscriptionEndDateAfter(LocalDateTime.now());
@@ -109,6 +109,7 @@ public class AlphaBotService {
         return returnString;
     }
 
+    @Transactional(readOnly = true)
     public TelegramRegisterResponse registerTelegram(Long telegramId, String telegramUserName, String apiKey) {
         TelegramRegisterResponse registerResponse = new TelegramRegisterResponse();
 
