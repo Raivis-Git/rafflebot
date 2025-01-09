@@ -38,10 +38,9 @@ public class AlphaBotService {
     public AlphaBotService() {
     }
 
-    @Transactional(readOnly = true)
     public void registerRaffle(String slug, String raffleName) {
         try {
-            Collection<Client> clientList = clientRepository.findBySubscriptionEndDateAfter(LocalDateTime.now());
+            Collection<Client> clientList = getClientsSubscriptionByEndDateAfter(LocalDateTime.now());
 
             for (Client client : clientList) {
                 try {
@@ -71,6 +70,12 @@ public class AlphaBotService {
         }
 
     }
+
+    @Transactional(readOnly = true)
+    public Collection<Client> getClientsSubscriptionByEndDateAfter(LocalDateTime localDateTime) {
+        return clientRepository.findBySubscriptionEndDateAfter(localDateTime);
+    }
+
 
     private void sendMessageIfSpecificErrorFound(String raffleName, Client client, String returnString) {
         String messageToSend = "Raffle: \n{0}\n Reason: {1}\n{2}";
