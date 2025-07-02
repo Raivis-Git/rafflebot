@@ -119,7 +119,7 @@ public class Listeners extends ListenerAdapter {
                 3. Konfigurē botu:
               Sazinies ar botu un norādi savu webhook saiti un API atslēgu.
                             
-              Pēc šo soļu izpildes bots automātiski piedalīsies visos AlphaBot izlozēs, kas atbilst tava servera un Discord lomu prasībām.
+              Pēc šo soļu izpildes bots automātiski piedalīsies visās AlphaBot izlozēs, kas atbilst tava servera un Discord lomu prasībām.
                             
               Piezīme: Lai iegūtu sīkāku informāciju un vizuālu pamācību, skaties video zemāk.
                             
@@ -222,7 +222,7 @@ public class Listeners extends ListenerAdapter {
                 3. Konfigurē botu:
               Sazinies ar botu un norādi savu webhook saiti un API atslēgu.
                             
-              Pēc šo soļu izpildes bots automātiski piedalīsies visos AlphaBot izlozēs, kas atbilst tava servera un Discord lomu prasībām.
+              Pēc šo soļu izpildes bots automātiski piedalīsies visās AlphaBot izlozēs, kas atbilst tava servera un Discord lomu prasībām.
                             
               Piezīme: Lai iegūtu sīkāku informāciju un vizuālu pamācību, skaties video zemāk.""");
 
