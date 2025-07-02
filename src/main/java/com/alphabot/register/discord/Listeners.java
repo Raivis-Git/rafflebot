@@ -76,6 +76,7 @@ public class Listeners extends ListenerAdapter {
   public void onMessageReceived(@NotNull MessageReceivedEvent event) {
     String message = event.getMessage().getContentRaw();
     if (message.startsWith("!acceptRafflesENRULV")) {
+      LOGGER.info("Received !acceptRafflesENRULV");
       MessageChannel messageChannelSetup = event.getChannel();
       sendFunctionalMessage(messageChannelSetup);
       sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
@@ -146,6 +147,7 @@ public class Listeners extends ListenerAdapter {
               Подробную информацию и наглядное руководство можно найти в видео ниже.""");
 
     } else if (message.startsWith("!acceptRafflesEN")) {
+      LOGGER.info("Received !acceptRafflesEN");
       MessageChannel messageChannelSetup = event.getChannel();
       sendFunctionalMessage(messageChannelSetup);
       sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
@@ -172,6 +174,7 @@ public class Listeners extends ListenerAdapter {
               """);
 
     } else if (message.startsWith("!acceptRafflesRU")) {
+      LOGGER.info("Received !acceptRafflesRU");
       MessageChannel messageChannelSetup = event.getChannel();
       sendFunctionalMessage(messageChannelSetup);
       sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
@@ -198,6 +201,7 @@ public class Listeners extends ListenerAdapter {
               Подробную информацию и наглядное руководство можно найти в видео ниже.""");
 
     } else if (message.startsWith("!acceptRafflesLV")) {
+      LOGGER.info("Received !acceptRafflesLV");
       MessageChannel messageChannelSetup = event.getChannel();
       sendFunctionalMessage(messageChannelSetup);
       sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
@@ -223,6 +227,7 @@ public class Listeners extends ListenerAdapter {
               Piezīme: Lai iegūtu sīkāku informāciju un vizuālu pamācību, skaties video zemāk.""");
 
     } else if (message.startsWith("!testtesttest")) {
+      LOGGER.info("Received !testtesttest");
       MessageChannel messageChannelSetup = event.getChannel();
       sendFunctionalMessage(messageChannelSetup);
       sendDescriptionMessage(messageChannelSetup, "Raffle Bot",
@@ -245,6 +250,7 @@ public class Listeners extends ListenerAdapter {
   @Override
   public void onModalInteraction(@Nonnull ModalInteractionEvent event) {
     if (event.getModalId().equals("raffleRegister")) {
+      LOGGER.info("Received modal :raffleRegister");
       String webhook = Objects.requireNonNull(event.getValue("webhook")).getAsString();
       String apiKey = Objects.requireNonNull(event.getValue("apiKey")).getAsString();
 
