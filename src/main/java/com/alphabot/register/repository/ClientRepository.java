@@ -14,7 +14,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     Client findByRaffleKey(String raffleKey);
 
-    Collection<Client> findBySubscriptionEndDateAfter(LocalDateTime date);
+    List<Client> findBySubscriptionEndDateAfter(LocalDateTime date);
 
     Client findByTelegramId(String telegramId);
 

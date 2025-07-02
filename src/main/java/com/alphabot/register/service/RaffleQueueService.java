@@ -5,33 +5,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 @Service
 public class RaffleQueueService {
 
-    Logger LOGGER = LoggerFactory.getLogger(RaffleQueueService.class);
+    Logger logger = LoggerFactory.getLogger(RaffleQueueService.class);
 
-    private final BlockingQueue<RaffleDAO> raffleQueue = new LinkedBlockingQueue<>();
+    private final ConcurrentLinkedQueue<RaffleDAO> raffleQueue = new ConcurrentLinkedQueue<>();
 
     public void addToRaffleQueue(RaffleDAO raffleDAO) {
-        try {
-            raffleQueue.put(raffleDAO);  // This will block if the queue is full
-            LOGGER.info("Added to Queue: " + raffleDAO);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Failed to add data to the raffle queue", e);
-        }
+        raffleQueue.offer(raffleDAO);
+        logger.info("Added to Queue: {}", raffleDAO);
     }
 
     public RaffleDAO takeFromRaffleQueue() {
-        try {
-            return raffleQueue.take();  // This will block until there's data to consume
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Failed to retrieve data from the raffle queue", e);
-        }
+        RaffleDAO raffleDAO = raffleQueue.poll();
+        logger.info("Took from Queue: {}", raffleDAO);
+        return raffleDAO;
     }
 
     public Integer getQueueSize() {

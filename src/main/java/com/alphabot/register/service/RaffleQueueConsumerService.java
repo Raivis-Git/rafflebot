@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.*;
-
 @Service
 public class RaffleQueueConsumerService {
 
@@ -21,33 +19,23 @@ public class RaffleQueueConsumerService {
 
     @Async("taskExecutor")
     public void startConsuming() {
-        CompletableFuture.runAsync(() -> {
-            try {
-                while (raffleQueueService.hasData()) {
-                    LOGGER.info("Task executor started running!");
-                    RaffleDAO data = raffleQueueService.takeFromRaffleQueue();
-                    processWithTimeout(data);
-                }
-            } finally {
-                LOGGER.info("Task executor stopped running!");
-            }
-        });
-
-    }
-
-    private void process(RaffleDAO raffleDAO) {
-        alphaBotService.registerRaffle(raffleDAO.getSlug(), raffleDAO.getRaffleName());
-        LOGGER.info("Processed by: " + Thread.currentThread().getName() + "--- Raffle: " + raffleDAO.getRaffleName());
-    }
-
-    private void processWithTimeout(RaffleDAO data) {
         try {
-            CompletableFuture.supplyAsync(() -> {
-                process(data);
-                return null;
-            }).orTimeout(30, TimeUnit.SECONDS).join();
+            while (raffleQueueService.hasData()) {
+                LOGGER.info("Task executor started running!");
+                RaffleDAO data = raffleQueueService.takeFromRaffleQueue();
+                processRaffle(data);
+            }
+        } finally {
+            LOGGER.info("Task executor stopped running!");
+        }
+    }
+
+    private void processRaffle(RaffleDAO raffleDAO) {
+        try {
+            alphaBotService.registerRaffle(raffleDAO.getSlug(), raffleDAO.getRaffleName());
+            LOGGER.info("Processed by: " + Thread.currentThread().getName() + "--- Raffle: " + raffleDAO.getRaffleName());
         } catch (Exception e) {
-            LOGGER.error("Processing timeout for raffle: " + data.getSlug());
+            LOGGER.error("Failed to process raffle: " + raffleDAO.getSlug());
         }
     }
 

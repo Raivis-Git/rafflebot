@@ -40,9 +40,9 @@ public class AlphaBotService {
 
     public void registerRaffle(String slug, String raffleName) {
         try {
-            Collection<Client> clientList = getClientsSubscriptionByEndDateAfter(LocalDateTime.now());
+            List<Client> clientList = getClientsSubscriptionByEndDateAfter(LocalDateTime.now());
 
-            for (Client client : clientList) {
+            clientList.parallelStream().forEach(client -> {
                 try {
                     Register register = alphabot.registerRaffle(slug, client.getRaffleKey());
                     logger.info("Client id: {}, telegramId: {}, sendToTelegram: {}, telegramUserName: {}"
@@ -50,21 +50,19 @@ public class AlphaBotService {
                     if (register.getSuccess()) {
                         discordMain.sendEmbedWebhook(client.getDiscordWebhook(), "Raffle registration successful",
                                 "Registered to: \n" + raffleName, client.getDiscordName(), true);
-                        continue;
                     }
-
-//              If failed send embed msg to webhook
-                    String returnString = getErrorString(register);
-                    if (returnString == null)
-                        continue;
-
-                    returnString = returnString.toLowerCase().trim();
-
-                    sendMessageIfSpecificErrorFound(raffleName, client, returnString);
+                    else {
+//                      If failed send embed msg to webhook
+                        String returnString = getErrorString(register);
+                        if (returnString != null) {
+                            returnString = returnString.toLowerCase().trim();
+                            sendMessageIfSpecificErrorFound(raffleName, client, returnString);
+                        }
+                    }
 
                 } catch (Exception ignore) {
                 }
-            }
+            });
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -72,7 +70,7 @@ public class AlphaBotService {
     }
 
     @Transactional(readOnly = true)
-    public Collection<Client> getClientsSubscriptionByEndDateAfter(LocalDateTime localDateTime) {
+    public List<Client> getClientsSubscriptionByEndDateAfter(LocalDateTime localDateTime) {
         return clientRepository.findBySubscriptionEndDateAfter(localDateTime);
     }
 

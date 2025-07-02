@@ -27,5 +27,6 @@ public class TelegramService {
         telegramMessage.setTelegramId(Long.parseLong(telegramIdString));
         telegramMessage.setMessage(message);
         telegramMessageService.sendMessage(telegramMessage);
+        logger.info("Message sent to Telegram: id - {}, message - {}", telegramIdString, message);
     }
 }
