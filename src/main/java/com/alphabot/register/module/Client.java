@@ -33,8 +33,8 @@ public class Client {
     @Column(name = "groupId")
     private String groupId;
 
-    @Column(name = "sendToTelegram", columnDefinition = "boolean default false", nullable = false)
-    private Boolean sendToTelegram;
+    @Column(name = "sendToTelegram", columnDefinition = "boolean default false")
+    private Boolean sendToTelegram = false;
 
     @Column(name = "created")
     private LocalDateTime created = LocalDateTime.now();
