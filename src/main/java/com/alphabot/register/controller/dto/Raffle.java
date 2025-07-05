@@ -319,4 +319,16 @@ public class Raffle {
     public void setTwitterRetweetType(String twitterRetweetType) {
         this.twitterRetweetType = twitterRetweetType;
     }
+
+    @Override
+    public String toString() {
+        return "Raffle{" +
+            "slug='" + slug + '\'' +
+            ", name='" + name + '\'' +
+            ", type='" + type + '\'' +
+            ", status='" + status + '\'' +
+            ", blockchain='" + blockchain + '\'' +
+            ", reqString='" + reqString + '\'' +
+            '}';
+    }
 }

@@ -13,7 +13,7 @@ public class RafflesActivePost {
                 "event='" + event + '\'' +
                 ", timestamp=" + timestamp +
                 ", hash='" + hash + '\'' +
-                ", data=" + data +
+                ", data=" + data.raffle.toString() +
                 '}';
     }
 
