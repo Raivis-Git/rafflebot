@@ -42,7 +42,7 @@ public class AlphaBotService {
         try {
             List<Client> clientList = getClientsSubscriptionByEndDateAfter(LocalDateTime.now());
 
-            clientList.parallelStream().forEach(client -> {
+            clientList.forEach(client -> {
                 try {
                     Register register = alphabot.registerRaffle(slug, client.getRaffleKey());
                     logger.info("Client id: {}, telegramId: {}, sendToTelegram: {}, telegramUserName: {}"
