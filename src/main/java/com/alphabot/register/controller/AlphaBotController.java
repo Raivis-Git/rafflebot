@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/raffles")
 public class AlphaBotController {
 
-    Logger logger = LoggerFactory.getLogger(AlphaBotController.class);
-    @Autowired
-    AlphaBotService alphaBotService;
+  Logger logger = LoggerFactory.getLogger(AlphaBotController.class);
+  @Autowired
+  AlphaBotService alphaBotService;
 
-    @PostMapping(consumes ="application/json")
-    public ResponseEntity<?> postRaffles(@RequestBody RafflesActivePost rafflesActivePost) {
-        logger.info("Received a raffle post: " + rafflesActivePost);
-        if ("raffle:active".equals(rafflesActivePost.getEvent())) {
-            logger.info("Raffle slug: {}", rafflesActivePost.getData().getRaffle().getSlug());
-            alphaBotService.registerRaffle(rafflesActivePost.getData().getRaffle().getSlug(), rafflesActivePost.getData().getRaffle().getName());
-        }
-        return ResponseEntity.ok().build();
+  @PostMapping(consumes = "application/json")
+  public ResponseEntity<?> postRaffles(@RequestBody RafflesActivePost rafflesActivePost) {
+    logger.info("Received raffle event:{}\nraffle info:{}", rafflesActivePost.getEvent(), rafflesActivePost.getData().getRaffle());
+    if ("raffle:active".equals(rafflesActivePost.getEvent())) {
+      logger.info("Raffle slug: {}", rafflesActivePost.getData().getRaffle().getSlug());
+      alphaBotService.registerRaffle(rafflesActivePost.getData().getRaffle().getSlug(), rafflesActivePost.getData().getRaffle().getName());
     }
+    return ResponseEntity.ok().build();
+  }
 }
